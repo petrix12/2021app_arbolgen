@@ -6,6 +6,18 @@ $nav_links = [
         'active' => request()->routeIs('home')
     ],
 ];
+
+if(!Auth::guest()){
+    if(Auth::user()->hasRole('Admin')){
+        array_push($nav_links,
+            [
+                'name' => 'Documentacion',
+                'route' => route('documentacion'),
+                'active' => request()->routeIs('documentacion')
+            ]
+        );
+    }
+}
 @endphp
 
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
