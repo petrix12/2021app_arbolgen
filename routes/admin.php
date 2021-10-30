@@ -8,3 +8,5 @@ use App\Http\Controllers\Admin\UserController;
 Route::get('', [HomeController::class, 'index'])->middleware('can:Admin')->name('home');
 
 Route::resource('roles', RoleController::class)->names('roles');
+
+Route::resource('users', UserController::class)->only(['index', 'edit', 'update'])->names('users');

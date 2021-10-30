@@ -14,6 +14,11 @@ if(!Auth::guest()){
                 'name' => 'Documentacion',
                 'route' => route('documentacion'),
                 'active' => request()->routeIs('documentacion')
+            ],
+            [
+                'name' => 'Administrar',
+                'route' => route('admin.home'),
+                'active' => request()->routeIs('admin.home')
             ]
         );
     }
