@@ -1,3 +1,13 @@
+@php
+$nav_links = [
+    [
+        'name' => 'Inicio',
+        'route' => route('home'),
+        'active' => request()->routeIs('home')
+    ],
+];
+@endphp
+
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,9 +22,11 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-jet-nav-link>
+                    @foreach ($nav_links as $nav_link)
+                        <x-jet-nav-link href="{{ $nav_link['route'] }}" :active="$nav_link['active']">
+                            {{ $nav_link['name'] }}
+                        </x-jet-nav-link>
+                    @endforeach
                 </div>
             </div>
 
@@ -93,12 +105,18 @@
                         <x-slot name="content">
                             <!-- Account Management -->
                             <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('Manage Account') }}
+                                Administrar cuenta
                             </div>
 
                             <x-jet-dropdown-link href="{{ route('profile.show') }}">
-                                {{ __('Profile') }}
+                                Perfil
                             </x-jet-dropdown-link>
+
+                            @can('Admin')
+                                <x-jet-dropdown-link href="{{ route('admin.home') }}">
+                                    Administrador
+                                </x-jet-dropdown-link>
+                            @endcan
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-jet-dropdown-link href="{{ route('api-tokens.index') }}">
@@ -115,7 +133,7 @@
                                 <x-jet-dropdown-link href="{{ route('logout') }}"
                                          onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                    {{ __('Log Out') }}
+                                    Salir
                                 </x-jet-dropdown-link>
                             </form>
                         </x-slot>
@@ -138,9 +156,11 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-jet-responsive-nav-link>
+            @foreach ($nav_links as $nav_link)
+                <x-jet-responsive-nav-link href="{{ $nav_link['route'] }}" :active="$nav_link['active']">
+                    {{ $nav_link['name'] }}
+                </x-jet-responsive-nav-link>
+            @endforeach
         </div>
 
         <!-- Responsive Settings Options -->
@@ -161,8 +181,14 @@
             <div class="mt-3 space-y-1">
                 <!-- Account Management -->
                 <x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
-                    {{ __('Profile') }}
+                    Perfil
                 </x-jet-responsive-nav-link>
+                
+                @can('Admin')
+                    <x-jet-responsive-nav-link href="{{ route('admin.home') }}" :active="request()->routeIs('admin.home')">
+                        Administrador
+                    </x-jet-responsive-nav-link>
+                @endcan  
 
                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                     <x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
@@ -177,7 +203,7 @@
                     <x-jet-responsive-nav-link href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                     this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        Salir
                     </x-jet-responsive-nav-link>
                 </form>
 
