@@ -3,13 +3,13 @@
         <x-jet-application-logo class="block h-12 w-auto" />
     </div>
 
-    <div class="mt-8 text-2xl flex">
+    <div class="mt-8 text-2xl sm:flex">
         {{-- Hijos --}}
         <div class="px-4 py-2 m-2 flex-1">
             
             <div class="justify-center">
                 <label for="hijos" class="px-3 block text-sm font-medium text-gray-700" title="Seleccionar hijo">Hijos</label>
-                <select wire:model="Hijo" style="width:450px" name="hijos" class="w-44 mt-1 block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <select wire:model="Hijo" name="hijos" class="w-full mt-1 block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     <option value="{{ null }}">-</option>
                     <option value="1">Hijo 1</option>
                     <option value="2">Hijo 2</option>
@@ -20,7 +20,7 @@
                 </select>
                 <div class="pt-2">
                     <div class="px-4 py-3 bg-gray-50 text-left sm:px-6">
-                        <a href="#" target="_blank" class="cfrSefar inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white hover:text-black bg-gray-900 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <a href="#" target="_blank" class="w-full cfrSefar inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white hover:text-blue-400 bg-gray-700 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Ir a familiar seleccionado
                         </a>
                     </div>
@@ -29,19 +29,18 @@
         </div>
 
         {{-- Uniones --}}
-        <div class="px-4 py-2 m-2">
+        <div class="px-4 py-2 m-2 flex-1">
             
             <div class="justify-center">
                 <label for="hijos" class="px-3 block text-sm font-medium text-gray-700" title="Seleccionar hijo">Uniones</label>
-                <select wire:model="Hijo" style="width:450px" name="hijos" class="w-44 mt-1 block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <select wire:model="Union" name="hijos" class="w-full mt-1 block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     <option value="{{ null }}">-</option>
-                    <option value="1">Hijo 1</option>
-                    <option value="2">Hijo 2</option>
-                    <option value="1">Hijo 1</option>
+                    <option value="1">Unión 1</option>
+                    <option value="2">Unión 2</option>
                 </select>
                 <div class="pt-2">
                     <div class="px-4 py-3 bg-gray-50 text-left sm:px-6">
-                        <a href="#" target="_blank" class="cfrSefar inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white hover:text-black bg-gray-900 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <a href="#" target="_blank" class="w-full cfrSefar inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white hover:text-blue-400 bg-gray-700 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Ir a unión seleccionada
                         </a>
                     </div>
@@ -66,7 +65,7 @@
         <div style="height:37rem" class="container relative overflow-x-scroll">
             <div class="tree-chart" width="100%">
                 <!-- *** PIVOTE *** -->
-                <div class="caja_per" style="top: 225px; left: 10px; ">
+                <div class="caja_per" style="top: 225px; left: 10px;">
                     <span class="encabezado" title="Datos matrimonio...">Pivote</span>
                     <span class="nombres">
                         {{-- <x-editar-persona-i-v2 :agclientes='$agclientes' :id='1'/> {{ Str::limit(GetNombres($agclientes,1), 30) }} --}}

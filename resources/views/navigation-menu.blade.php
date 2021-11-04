@@ -1,13 +1,19 @@
 @php
-$nav_links = [
-    [
-        'name' => 'Inicio',
-        'route' => route('home'),
-        'active' => request()->routeIs('home')
-    ],
-];
-
+$nav_links = [];
 if(!Auth::guest()){
+    $nav_links = [
+        [
+            'name' => 'Inicio',
+            'route' => route('home'),
+            'active' => request()->routeIs('home')
+        ],
+        [
+            'name' => 'Árbol',
+            'route' => route('dashboard'),
+            'active' => request()->routeIs('dashboard')
+        ],
+    ];
+
     if(Auth::user()->hasRole('Admin')){
         array_push($nav_links,
             [
