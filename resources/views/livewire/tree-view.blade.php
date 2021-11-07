@@ -52,35 +52,30 @@
 
 <div class="bg-gray-200 bg-opacity-25">
     <div class="p-6 border-t border-gray-200 md:border-l">
-        {{-- <div class="flex items-center">
-            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-400"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-            <div class="ml-4 text-lg text-gray-600 leading-7 font-semibold">Authentication</div>
-        </div>
-
-        <div class="ml-12">
-            <div class="mt-2 text-sm text-gray-500">
-                Authentication and registration views are included with Laravel Jetstream, as well as support for user email verification and resetting forgotten passwords. So, you're free to get started what matters most: building your application.
-            </div>
-        </div> --}}
         <div style="height:37rem" class="container relative overflow-x-scroll">
             <div class="tree-chart" width="100%">
                 <!-- *** PIVOTE *** -->
                 <div class="caja_per" style="top: 225px; left: 10px;">
                     <span class="encabezado" title="Datos matrimonio...">Pivote</span>
-                    <span class="nombres">
+                    <span class="nombres" title="{{ $trees->find($id)->nombres }}">
                         {{-- <x-editar-persona-i-v2 :agclientes='$agclientes' :id='1'/> {{ Str::limit(GetNombres($agclientes,1), 30) }} --}}
-                        Pedro Jesús
+                        {{ Str::limit($trees->find($id)->nombres, 30) }}
                     </span>
-                    <span class="apellidos">Bazó Canelón</span>
+                    <span class="apellidos" title="{{ $trees->find($id)->apellido_padre . ' ' . $trees->find($id)->apellido_madre }}">
+                        {{ Str::limit($trees->find($id)->apellido_padre . ' ' . $trees->find($id)->apellido_madre, 30) }}
+                    </span>
                     @if (true)
                         <span class="texto">Lugar de nacimiento</span>
-                        <span class="nacimiento">Caracas</span>  
+                        <span class="nacimiento" title="{{ $trees->find($id)->lugar_nac }}">{{ Str::limit($trees->find($id)->lugar_nac, 30) }}</span>  
                     @endif
-                    <span class="vida" title="Lugar y año de nacimiento y fallecimiento">1972 / --</span>
+                    <span class="vida">
+                        {{ is_null($trees->find($id)->anho_nac) ? '--' : $trees->find($id)->anho_nac }} /
+                        {{ is_null($trees->find($id)->anho_def) ? '--' : $trees->find($id)->anho_def }}
+                    </span>
                     {{-- <x-ver-doc :agclientes='$agclientes' :id='1'/>
                     <x-cargar-doc :agclientes='$agclientes' :id='1'/> --}}
                 </div>
-    
+                
                 <!-- *** PADRES *** -->
                 @for ($i = 2; $i <= 3; $i++)
                     <div class="caja_per" style="top: {{ 85 + ($i-2)*280 }}px; left: 100px; ">

@@ -9,9 +9,14 @@ if(!Auth::guest()){
         ],
         [
             'name' => 'Árbol',
-            'route' => route('dashboard'),
+            'route' => route('dashboard',1),
             'active' => request()->routeIs('dashboard')
         ],
+        [
+            'name' => 'Lista',
+            'route' => route('crud.trees.index'),
+            'active' => request()->routeIs('crud.trees.*')
+        ]
     ];
 
     if(Auth::user()->hasRole('Admin')){

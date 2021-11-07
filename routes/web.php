@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TreeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +18,14 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->get('dashboard/{id?}', function ($id) {
+    return view('dashboard', compact('id'));
 })->name('dashboard');
 
 Route::view('documentos', 'documentacion')->name('documentacion')->middleware('can:Admin');
+
+// Grupo de rutas CRUD
+Route::group(['middleware' => ['auth'], 'as' => 'crud.'], function(){
+    Route::resource('trees', TreeController::class)->names('trees')
+			->middleware('can:Ver arboles');
+});
