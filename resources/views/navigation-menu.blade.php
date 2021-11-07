@@ -9,7 +9,7 @@ if(!Auth::guest()){
         ],
         [
             'name' => 'Árbol',
-            'route' => route('dashboard',1),
+            'route' => route('dashboard', 1),
             'active' => request()->routeIs('dashboard')
         ],
         [
