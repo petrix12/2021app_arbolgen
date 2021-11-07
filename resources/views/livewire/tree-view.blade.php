@@ -57,12 +57,11 @@
                 <!-- *** PIVOTE *** -->
                 <div class="caja_per" style="top: 225px; left: 10px;">
                     <span class="encabezado" title="Datos matrimonio...">Pivote</span>
-                    <span class="nombres" title="{{ $trees->find($id)->nombres }}">
-                        {{-- <x-editar-persona-i-v2 :agclientes='$agclientes' :id='1'/> {{ Str::limit(GetNombres($agclientes,1), 30) }} --}}
-                        {{ Str::limit($trees->find($id)->nombres, 30) }}
+                    <span class="nombres" title="{{ GetNombres($id) }}">
+                        {{ Str::limit(GetNombres($id), 30) }}
                     </span>
-                    <span class="apellidos" title="{{ $trees->find($id)->apellido_padre . ' ' . $trees->find($id)->apellido_madre }}">
-                        {{ Str::limit($trees->find($id)->apellido_padre . ' ' . $trees->find($id)->apellido_madre, 30) }}
+                    <span class="apellidos" title="{{ GetApellidos($id) }}">
+                        {{ Str::limit(GetApellidos($id), 30) }}
                     </span>
                     @if (true)
                         <span class="texto">Lugar de nacimiento</span>

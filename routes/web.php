@@ -27,5 +27,5 @@ Route::view('documentos', 'documentacion')->name('documentacion')->middleware('c
 // Grupo de rutas CRUD
 Route::group(['middleware' => ['auth'], 'as' => 'crud.'], function(){
     Route::resource('trees', TreeController::class)->names('trees')
-			->middleware('can:Ver arboles');
+			->middleware('can:VerArboles');
 });

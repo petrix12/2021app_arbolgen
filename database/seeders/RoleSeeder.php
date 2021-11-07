@@ -29,6 +29,6 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'Editar usuarios'])->syncRoles($rolAdmin);
         Permission::create(['name' => 'Eliminar usuarios'])->syncRoles($rolAdmin);
 
-        Permission::create(['name' => 'Ver arboles'])->syncRoles($rolAdmin, $rolFamiliar, $rolVisitante);
+        Permission::create(['name' => 'VerArboles'])->syncRoles($rolAdmin, $rolFamiliar, $rolVisitante);
     }
 }
