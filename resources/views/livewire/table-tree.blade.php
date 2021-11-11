@@ -14,7 +14,7 @@
         {{-- @endcan --}}
     </div>
 
-    <div class="min-w-screen {{-- min-h-screen --}} bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden">
+    <div class="min-w-screen {{-- min-h-screen --}} flex items-center justify-center bg-gray-100 font-sans overflow-hidden">
         <div class=" w-full {{-- lg:w-5/6 --}}">
             {{-- Inicio Buscar --}}
             <div class="flex bg-white px-4 py-3 sm:px-6">

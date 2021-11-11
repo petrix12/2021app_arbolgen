@@ -28,8 +28,9 @@ class TreeController extends Controller
         $idPivote = $request->idPivote;
         $idHijo = $request->idHijo;
         $sexo = $request->sexo;
-        /* dd($idPivote, $idHijo, $sexo); */
-        return view('crud.trees.create', compact('tree', 'idPivote', 'idHijo', 'sexo'));
+        $idPadre = $request->idPadre;
+
+        return view('crud.trees.create', compact('tree', 'idPivote', 'idHijo', 'sexo', 'idPadre'));
     }
 
     /**

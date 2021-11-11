@@ -20,7 +20,15 @@
                         <div class="container relative">
                             <div class="tree-chart" width="100%">
                                 @php
-                                    $tree->sexo = $sexo
+                                    if($idPadre){
+                                        if($sexo == 'M'){
+                                            $tree->id_padre = $idPadre;
+                                        }else{
+                                            $tree->id_madre = $idPadre;
+                                        }
+                                    }else{
+                                        $tree->sexo = $sexo;
+                                    }
                                 @endphp
                                 @include('crud.trees.formulario')
                                 {{-- {!! Form::hidden('Crear Persona') !!} --}}

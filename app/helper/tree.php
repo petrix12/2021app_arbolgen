@@ -7,6 +7,15 @@ function existePersona($id){
     return Tree::find($id);
 }
 
+// Obtener sexo
+function GetSexo($id){
+    try{
+        return Tree::find($id)->sexo;
+    }catch(Exception $e){
+        return null;
+    }
+}
+
 /* * * PADRES * * */
 
 // Obtener id de padre

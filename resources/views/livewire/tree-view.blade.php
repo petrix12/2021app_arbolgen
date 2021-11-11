@@ -6,6 +6,15 @@
         <div>
             <x-jet-application-logo class="block h-12 w-auto" />
         </div>
+        {{-- @can('crud.agclientes.create') --}}
+        <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0 pt-4">
+            <div class="inline-flex rounded-md shadow">
+                <a href="{{ route('crud.trees.create') }}" class="w-full cfrSefar inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white hover:text-blue-400 bg-gray-700 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    {{ __('Add person') }}
+                </a>
+            </div>
+        </div>
+        {{-- @endcan --}}
     </div>
     
     <div class="bg-gray-200 bg-opacity-25">
@@ -17,17 +26,23 @@
                         <span class="encabezado" title="{{ GetDatosMatrimonio($id) }}">
                             {{ 'Pivote' . ($id ? ' (' . $id  .')' : '') }}
                         </span>
-                        <span class="foto">
-                            @if (file_exists('assets/images/personas/' . $id . '.jpg'))
-                                <div class="flex-shrink-0 h-10 w-10">
-                                    <img class="h-10 w-10 rounded-full" src="{{ asset('assets/images/personas/' . $id . '.jpg') }}" alt="Foto Pivote">
-                                </div>
-                            @else
-                                <div class="flex-shrink-0 h-10 w-10">
-                                    <img class="h-10 w-10 rounded-full" src="{{ asset('assets/images/personas/0.jpg') }}" alt="Foto Pivote">
-                                </div>
-                            @endif
-                        </span>
+                        <a href="{{ route('crud.trees.create', array(
+                                'idPivote' => $id, 
+                                'idPadre' => $id, 
+                                'sexo' => GetSexo($id)
+                            )) }}">
+                                <span class="foto">
+                                    @if (file_exists('assets/images/personas/' . $id . '.jpg'))
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="{{ asset('assets/images/personas/' . $id . '.jpg') }}" alt="Foto Pivote">
+                                        </div>
+                                    @else
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="{{ asset('assets/images/personas/0.jpg') }}" alt="Foto Pivote">
+                                        </div>
+                                    @endif
+                                </span>
+                        </a>
                         <span class="nombres" title="{{ GetNombres($id) }}">
                             {{ Str::limit(GetNombres($id), 30) }}
                         </span>
