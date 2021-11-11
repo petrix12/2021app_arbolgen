@@ -22,7 +22,7 @@
                     title="Inline Frame Example"
                     width="100%"
                     height="800"
-                    src="{{ asset('paso-paso.html') }}">
+                    src="{{ asset('storage/paso-paso.html') }}">
                 </iframe>
             </div>
         </div>

@@ -32,13 +32,13 @@
                                 'sexo' => GetSexo($id)
                             )) }}">
                                 <span class="foto">
-                                    @if (file_exists('assets/images/personas/' . $id . '.jpg'))
+                                    @if (file_exists('storage/assets/images/personas/' . $id . '.jpg'))
                                         <div class="flex-shrink-0 h-10 w-10">
-                                            <img class="h-10 w-10 rounded-full" src="{{ asset('assets/images/personas/' . $id . '.jpg') }}" alt="Foto Pivote">
+                                            <img class="h-10 w-10 rounded-full" src="{{ asset('storage/assets/images/personas/' . $id . '.jpg') }}" alt="Foto Pivote">
                                         </div>
                                     @else
                                         <div class="flex-shrink-0 h-10 w-10">
-                                            <img class="h-10 w-10 rounded-full" src="{{ asset('assets/images/personas/0.jpg') }}" alt="Foto Pivote">
+                                            <img class="h-10 w-10 rounded-full" src="{{ asset('storage/assets/images/personas/0.jpg') }}" alt="Foto Pivote">
                                         </div>
                                     @endif
                                 </span>
@@ -93,13 +93,13 @@
                             @if (existePersona($idP))
                                 <span class="foto">
                                     <button title="Establecer como pivote" wire:click="cambiar_id({{ $idP }})">
-                                        @if (file_exists('assets/images/personas/' . $idP . '.jpg'))
+                                        @if (file_exists('storage/assets/images/personas/' . $idP . '.jpg'))
                                             <div class="flex-shrink-0 h-10 w-10">
-                                                <img class="h-10 w-10 rounded-full" src="{{ asset('assets/images/personas/' . $idP . '.jpg') }}" alt="Foto Padres">
+                                                <img class="h-10 w-10 rounded-full" src="{{ asset('storage/assets/images/personas/' . $idP . '.jpg') }}" alt="Foto Padres">
                                             </div>
                                         @else
                                             <div class="flex-shrink-0 h-10 w-10">
-                                                <img class="h-10 w-10 rounded-full" src="{{ asset('assets/images/personas/0.jpg') }}" alt="Foto Padres">
+                                                <img class="h-10 w-10 rounded-full" src="{{ asset('storage/assets/images/personas/0.jpg') }}" alt="Foto Padres">
                                             </div>
                                         @endif
                                     </button>
@@ -165,13 +165,13 @@
                             @if (existePersona($idA))
                                 <span class="foto">
                                     <button title="Establecer como pivote" wire:click="cambiar_id({{ $idA }})">
-                                        @if (file_exists('assets/images/personas/' . $idA . '.jpg'))
+                                        @if (file_exists('storage/assets/images/personas/' . $idA . '.jpg'))
                                             <div class="flex-shrink-0 h-8 w-8">
-                                                <img class="h-8 w-8 rounded-full" src="{{ asset('assets/images/personas/' . $idA . '.jpg') }}" alt="Foto Abuelos">
+                                                <img class="h-8 w-8 rounded-full" src="{{ asset('storage/assets/images/personas/' . $idA . '.jpg') }}" alt="Foto Abuelos">
                                             </div>
                                         @else
                                             <div class="flex-shrink-0 h-8 w-8">
-                                                <img class="h-8 w-8 rounded-full" src="{{ asset('assets/images/personas/0.jpg') }}" alt="Foto Abuelos">
+                                                <img class="h-8 w-8 rounded-full" src="{{ asset('storage/assets/images/personas/0.jpg') }}" alt="Foto Abuelos">
                                             </div>
                                         @endif
                                     </button>
@@ -235,13 +235,13 @@
                             @if (existePersona($idB))
                                 <span class="foto">
                                     <button title="Establecer como pivote" wire:click="cambiar_id({{ $idB }})">
-                                        @if (file_exists('assets/images/personas/' . $idB . '.jpg'))
+                                        @if (file_exists('storage/assets/images/personas/' . $idB . '.jpg'))
                                             <div class="flex-shrink-0 h-6 w-6">
-                                                <img class="h-6 w-6 rounded-full" src="{{ asset('assets/images/personas/' . $idB . '.jpg') }}" alt="Foto Bisabuelos">
+                                                <img class="h-6 w-6 rounded-full" src="{{ asset('storage/assets/images/personas/' . $idB . '.jpg') }}" alt="Foto Bisabuelos">
                                             </div>
                                         @else
                                             <div class="flex-shrink-0 h-6 w-6">
-                                                <img class="h-6 w-6 rounded-full" src="{{ asset('assets/images/personas/0.jpg') }}" alt="Foto Bisabuelos">
+                                                <img class="h-6 w-6 rounded-full" src="{{ asset('storage/assets/images/personas/0.jpg') }}" alt="Foto Bisabuelos">
                                             </div>
                                         @endif
                                     </button>
@@ -297,13 +297,13 @@
                         @if (existePersona($idT))
                             <span class="foto">
                                 <button title="Establecer como pivote" wire:click="cambiar_id({{ $idT }})">
-                                    @if (file_exists('assets/images/personas/' . $idT . '.jpg'))
+                                    @if (file_exists('storage/assets/images/personas/' . $idT . '.jpg'))
                                         <div class="flex-shrink-0 h-6 w-6">
-                                            <img class="h-4 w-4 rounded-full" src="{{ asset('assets/images/personas/' . $idT . '.jpg') }}" alt="Foto Tatarabuelos">
+                                            <img class="h-4 w-4 rounded-full" src="{{ asset('storage/assets/images/personas/' . $idT . '.jpg') }}" alt="Foto Tatarabuelos">
                                         </div>
                                     @else
                                         <div class="flex-shrink-0 h-6 w-6">
-                                            <img class="h-4 w-4 rounded-full" src="{{ asset('assets/images/personas/0.jpg') }}" alt="Foto Tatarabuelos">
+                                            <img class="h-4 w-4 rounded-full" src="{{ asset('storage/assets/images/personas/0.jpg') }}" alt="Foto Tatarabuelos">
                                         </div>
                                     @endif
                                 </button>

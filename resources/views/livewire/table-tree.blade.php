@@ -59,13 +59,13 @@
                             <tr class="border-b border-gray-200 hover:bg-gray-100">
                                 <td class="py-3 px-6 text-left whitespace-nowrap">
                                     <div class="flex items-center">
-                                        @if (file_exists('assets/images/personas/' . $tree->id . '.jpg'))
+                                        @if (file_exists('storage/assets/images/personas/' . $tree->id . '.jpg'))
                                             <div class="flex-shrink-0 h-10 w-10">
-                                                <img class="h-10 w-10 rounded-full" src="{{ asset('assets/images/personas/' . $tree->id . '.jpg') }}" alt="Foto Persona">
+                                                <img class="h-10 w-10 rounded-full" src="{{ asset('storage/assets/images/personas/' . $tree->id . '.jpg') }}" alt="Foto Persona">
                                             </div>
                                         @else
                                             <div class="flex-shrink-0 h-10 w-10">
-                                                <img class="h-10 w-10 rounded-full" src="{{ asset('assets/images/personas/0.jpg') }}" alt="Foto Persona">
+                                                <img class="h-10 w-10 rounded-full" src="{{ asset('storage/assets/images/personas/0.jpg') }}" alt="Foto Persona">
                                             </div>
                                         @endif
                                         <span class="font-medium px-2">

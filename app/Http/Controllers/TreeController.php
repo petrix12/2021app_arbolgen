@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tree;
+use Exception;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\TryCatch;
 
 class TreeController extends Controller
 {
@@ -67,7 +69,7 @@ class TreeController extends Controller
             $file = $request->file("file");
             if($file->guessExtension() == 'jpg'){
                 $nombre = $tree->id . "." . $file->guessExtension();
-                $ruta = public_path("assets/images/personas/".$nombre);
+                $ruta = public_path("storage/assets/images/personas/".$nombre);
                 copy($file, $ruta);
             }else{
                 $img_error = '. La imagen debe estar en formato jpg.';
@@ -132,7 +134,8 @@ class TreeController extends Controller
             $file = $request->file("file");
             if($file->guessExtension() == 'jpg'){
                 $nombre = $tree->id . "." . $file->guessExtension();
-                $ruta = public_path("assets/images/personas/".$nombre);
+                $ruta = public_path("storage/assets/images/personas/".$nombre);
+                /* dd($ruta); */
                 copy($file, $ruta);
             }else{
                 $img_error = '. La imagen debe estar en formato jpg.';
@@ -159,11 +162,19 @@ class TreeController extends Controller
     {
         // Borrar foto en caso de que exista
         $nombre = $tree->id . ".jpg";
-        $ruta = public_path("assets/images/personas/".$nombre);
-        unlink($ruta);
+        $ruta = public_path("storage/assets/images/personas/".$nombre);
+        $mensaje = 'Persona ' . $tree->nombres . ' eliminada correctamente de la base de datos.';
+
+        if(file_exists('storage/assets/images/personas/' . $tree->id . '.jpg')){
+            try{
+                unlink($ruta);
+            }catch(Exception $e){
+                $mensaje = $mensaje . '. La foto no pudo ser eliminada.';
+            }
+        }
 
         // Borrar persona de la base de datos
         $tree->delete();
-        return back()->with('status', 'Persona ' . $tree->nombres . ' eliminada correctamente de la base de datos');
+        return back()->with('status', $mensaje);
     }
 }
