@@ -28,6 +28,7 @@ class TableTree extends Component
             ->orWhere('lugar_matr','LIKE',"%$this->search%")
             ->orWhere('lugar_def','LIKE',"%$this->search%")
             ->orWhere('observaciones','LIKE',"%$this->search%")
+            ->orWhere('id','LIKE',"%$this->search%")
             ->orWhere(DB::raw("CONCAT(nombres,' ',apellido_padre,' ',apellido_madre)"), 'LIKE',"%$this->search%")
             ->orderBy('id','ASC')
             ->paginate($this->perPage);

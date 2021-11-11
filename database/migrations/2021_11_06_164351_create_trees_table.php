@@ -20,7 +20,7 @@ class CreateTreesTable extends Migration
             $table->string('nombres');
             $table->string('apellido_padre')->nullable();
             $table->string('apellido_madre')->nullable();
-            $table->string('sexo')->nullable();
+            $table->string('sexo');
             $table->integer('dia_nac')->nullable();
             $table->integer('mes_nac')->nullable();
             $table->integer('anho_nac')->nullable();

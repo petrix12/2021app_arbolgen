@@ -1,6 +1,21 @@
 <div class="overflow-x-auto">
+    <div class="p-6 sm:px-20 bg-white border-b border-gray-200">
+        <div>
+            <x-jet-application-logo class="block h-12 w-auto" />
+        </div>
+        {{-- @can('crud.agclientes.create') --}}
+        <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0 pt-4">
+            <div class="inline-flex rounded-md shadow">
+                <a href="{{ route('crud.trees.create') }}" class="w-full cfrSefar inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white hover:text-blue-400 bg-gray-700 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    {{ __('Add person') }}
+                </a>
+            </div>
+        </div>
+        {{-- @endcan --}}
+    </div>
+
     <div class="min-w-screen {{-- min-h-screen --}} bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden">
-        <div class="w-full lg:w-5/6">
+        <div class=" w-full {{-- lg:w-5/6 --}}">
             {{-- Inicio Buscar --}}
             <div class="flex bg-white px-4 py-3 sm:px-6">
                 <input 
@@ -25,9 +40,9 @@
                 @endif
             </div>
             {{-- Fin Buscar --}}
-            <div class="bg-white shadow-md rounded my-6">
+            <div class="bg-white shadow-md rounded {{-- my-6 --}}">
                 @if ($trees->count())
-                    <table class="min-w-max w-full table-auto">
+                    <table class="{{-- min-w-max--}} w-full table-auto ">
                         <thead>
                             <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                                 <th class="py-3 px-6 text-left">Persona</th>
@@ -59,7 +74,6 @@
                                             </p>
                                             <p title="{{ $tree->apellido_padre . ' '. $tree->apellido_madre }}">
                                                 {{ Str::limit($tree->apellido_padre . ' '. $tree->apellido_madre, 20) }}
-                                                {{-- {{ $tree->full_name }} --}}
                                             </p>
                                         </span>
                                     </div>
@@ -98,7 +112,7 @@
                                     </div>
                                 </td>
                                 <td class="py-3 px-6 text-center">
-                                    <div class="flex item-center justify-center">
+                                    <div class="item-center justify-center flex">
                                         <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                                             <a href="{{ route('dashboard', $tree->id) }}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -108,14 +122,26 @@
                                             </a>
                                         </div>
                                         <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                            </svg>
+                                            <a href="{{ route('crud.trees.edit', $tree->id) }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                </svg>
+                                            </a>
                                         </div>
                                         <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
+                                            <form action="{{ route('crud.trees.destroy', $tree) }}" method="POST">
+                                                @csrf
+                                                @method('delete')
+                                                <button 
+                                                    type="submit" 
+                                                    onclick="return confirm('¿Está seguro que desea eliminar este registro?')"
+                                                >
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                                {{-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg> --}}
+                                            </form>
                                         </div>
                                     </div>
                                 </td>
