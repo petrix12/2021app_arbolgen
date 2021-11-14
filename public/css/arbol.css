@@ -20,6 +20,15 @@
 .editar-bisabuelo{float:middle; position:absolute; right: 5px; font-size: 70%}
 .editar-tatarabuelo{float:middle; position:absolute; top:3px; right: 5px; font-size: 70%}
 
+.ver_documentos{float:middle; position:absolute; bottom:1px; left: 5px;}
+.cargar_documentos{float:middle; position:absolute; bottom:1px; right: 5px;}
+.ver_documentos_abl{float:middle; position:absolute; bottom:1px; left: 5px; font-size: 90%}
+.cargar_documentos_abl{float:middle; position:absolute; bottom:1px; right: 5px; font-size: 90%}
+.ver_documentos_babl{float:middle; position:absolute; bottom:1px; left: 5px; font-size: 80%}
+.cargar_documentos_babl{float:middle; position:absolute; bottom:1px; right: 5px; font-size: 80%}
+.ver_documentos_tabl{float:middle; position:absolute; bottom:2px; left: 25px; font-size: 70%}
+.cargar_documentos_tabl{float:middle; position:absolute; bottom:2px; right: 25px; font-size: 70%}
+
 .caja_per{
     border: 1px solid rgb(22,43,27);
     width: 270px;

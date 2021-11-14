@@ -230,6 +230,9 @@
                 <label for="file" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white hover:text-blue-400 bg-gray-700 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     <i class="fas fa-upload mr-2"></i> Foto
                 </label>
+                @error('file')
+                    <p><small style="color:red">*{{ $message }}*</small></p>
+                @enderror
                 <p class="block text-sm font-medium text-gray-700 mt-4">
                     La imagen debe estar en formato jpg y no debe pesar más de 2 MB.
                 </p>

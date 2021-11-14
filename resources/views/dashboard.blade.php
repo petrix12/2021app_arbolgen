@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 @if(existePersona($id))
-                    @livewire('tree-view',['idP' => $id])
+                    @livewire('tree-view', ['idP' => $id])
                 @else
                     <section class="mt-24 bg-gray-600 py-12">
                         <h1 class="text-center text-white text-3xl">

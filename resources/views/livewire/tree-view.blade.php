@@ -30,7 +30,7 @@
                                 'idPivote' => $id, 
                                 'idPadre' => $id, 
                                 'sexo' => GetSexo($id)
-                            )) }}">
+                            )) }}" title="Añadir hijo">
                                 <span class="foto">
                                     @if (file_exists('storage/assets/images/personas/' . $id . '.jpg'))
                                         <div class="flex-shrink-0 h-10 w-10">
@@ -63,6 +63,19 @@
                                 <i class="fas fa-user-edit text-red-700"></i>
                             </a>
                         </span>
+                        {{-- Documentos --}}
+                        @if(TieneDocumentos($id))
+                            <a href="{{ route('crud.files.show', array($id, 'idPivote' => $id)) }}">
+                                <span class="ver_documentos" title="Mostrar documentos">
+                                    <i class="fas fa-folder-open text-gray-500"></i>
+                                </span>
+                            </a>
+                        @endif
+                        <a href="{{ route('crud.files.create', ['id' => $id, 'idPivote' => $id]) }}">
+                            <span class="cargar_documentos" title="Cargar documentos">
+                                <i class="fas fa-folder-plus text-gray-500"></i>
+                            </span>
+                        </a>
                     </div>
                     
                     <!-- *** PADRES *** -->
@@ -109,6 +122,19 @@
                                         <i class="fas fa-user-edit text-red-700"></i>
                                     </a>
                                 </span>
+                                {{-- Documentos --}}
+                                @if(TieneDocumentos($idP))
+                                    <a href="{{ route('crud.files.show', array($idP, 'idPivote' => $idPivote)) }}">
+                                        <span class="ver_documentos" title="Mostrar documentos">
+                                            <i class="fas fa-folder-open text-gray-500"></i>
+                                        </span>
+                                    </a>
+                                @endif
+                                <a href="{{ route('crud.files.create', ['id' => $idP, 'idPivote' => $id]) }}">
+                                    <span class="cargar_documentos" title="Cargar documentos">
+                                        <i class="fas fa-folder-plus text-gray-500"></i>
+                                    </span>
+                                </a>
                             @else
                                 <span class="editar" title="Crear">
                                     @php
@@ -181,6 +207,19 @@
                                         <i class="fas fa-user-edit text-red-700"></i>
                                     </a>
                                 </span>
+                                {{-- Documentos --}}
+                                @if(TieneDocumentos($idA))
+                                    <a href="{{ route('crud.files.show', array($idA, 'idPivote' => $id)) }}">
+                                        <span class="ver_documentos_abl" title="Mostrar documentos">
+                                            <i class="fas fa-folder-open text-gray-500"></i>
+                                        </span>
+                                    </a>
+                                @endif
+                                <a href="{{ route('crud.files.create', ['id' => $idA, 'idPivote' => $id]) }}">
+                                    <span class="cargar_documentos_abl" title="Cargar documentos">
+                                        <i class="fas fa-folder-plus text-gray-500"></i>
+                                    </span>
+                                </a>
                             @else
                                 @if ($idHijo)
                                     <span class="editar-abuelo" title="Crear">
@@ -251,6 +290,19 @@
                                         <i class="fas fa-user-edit text-red-700"></i>
                                     </a>
                                 </span>
+                                {{-- Documentos --}}
+                                @if(TieneDocumentos($idB))
+                                    <a href="{{ route('crud.files.show', array($idB, 'idPivote' => $id)) }}">
+                                        <span class="ver_documentos_babl" title="Mostrar documentos">
+                                            <i class="fas fa-folder-open text-gray-500"></i>
+                                        </span>
+                                    </a>
+                                @endif
+                                <a href="{{ route('crud.files.create', ['id' => $idB, 'idPivote' => $id]) }}">
+                                    <span class="cargar_documentos_babl" title="Cargar documentos">
+                                        <i class="fas fa-folder-plus text-gray-500"></i>
+                                    </span>
+                                </a>
                             @else
                                 @if ($idHijo)
                                     <span class="editar-bisabuelo" title="Crear">
@@ -313,6 +365,19 @@
                                     <i class="fas fa-user-edit text-red-700"></i>
                                 </a>
                             </span>
+                            {{-- Documentos --}}
+                            @if(TieneDocumentos($idT))
+                                <a href="{{ route('crud.files.show', array($idT, 'idPivote' => $id)) }}">
+                                    <span class="ver_documentos_tabl" title="Mostrar documentos">
+                                        <i class="fas fa-folder-open text-gray-500"></i>
+                                    </span>
+                                </a>
+                            @endif
+                            <a href="{{ route('crud.files.create', ['id' => $idT, 'idPivote' => $id]) }}">
+                                <span class="cargar_documentos_tabl" title="Cargar documentos">
+                                    <i class="fas fa-folder-plus text-gray-500"></i>
+                                </span>
+                            </a>
                         @else
                             @if ($idHijo)
                                 <span class="editar-tatarabuelo" title="Crear">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\TreeController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,5 +28,9 @@ Route::view('documentos', 'documentacion')->name('documentacion')->middleware('c
 // Grupo de rutas CRUD
 Route::group(['middleware' => ['auth'], 'as' => 'crud.'], function(){
     Route::resource('trees', TreeController::class)->names('trees')
-			->middleware('can:VerArboles');
+		->middleware('can:VerArboles');
+    Route::resource('files', FileController::class)->names('files')
+        ->middleware('can:VerArboles');
+    Route::get('regresar', [FileController::class, 'regresar'])->name('regresar')
+        ->middleware('can:VerArboles');
 });

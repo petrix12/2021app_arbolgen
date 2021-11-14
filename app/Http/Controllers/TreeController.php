@@ -50,6 +50,7 @@ class TreeController extends Controller
             'id_padre' => 'nullable|numeric|min:1',
             'id_madre' => 'nullable|numeric|min:1',
             'sexo' => 'required',
+            'file' => 'max:2048',         // 1024 = 1 MB
         ]);
 
         $tree = Tree::create($request->all());

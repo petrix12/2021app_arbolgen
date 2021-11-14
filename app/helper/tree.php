@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\File;
 use App\Models\Tree;
+
+/* * * * * ÁRBOL  * * * * */
 
 // Verifica si una persona existe
 function existePersona($id){
@@ -448,4 +451,12 @@ function GetVidaLugarAnho($id){
     $nacimiento = GetDatosNacimiento($id);
     $defuncion = GetDatosDefuncion($id);
     return $nacimiento . ' - ' . $defuncion;
+}
+
+/* * * * * DOCUMENTOS  * * * * */
+
+// Verificar si una persona tiene documentos
+function TieneDocumentos($id){
+    $documentos = File::where('tree_id', 'LIKE', $id);
+    return $documentos->count() ? true : false;
 }

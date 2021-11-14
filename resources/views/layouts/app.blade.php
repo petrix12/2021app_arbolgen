@@ -6,6 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'App Árbol Genealógico') }}</title>
+        @include('layouts.partes.icono_web')
         <link rel="icon" href="favicon.ico" type="image/x-icon">
 
         <!-- Fonts -->
