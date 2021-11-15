@@ -58,28 +58,39 @@
                                 </td>
                                 <td class="py-3 px-6 text-center">
                                     <div class="item-center justify-center flex">
+                                        @if (!Auth::user()->hasPermissionTo('Editar'))
+                                            <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                                                <span title="Sin acción asignada">
+                                                    <i class="fas fa-exclamation-triangle"></i>
+                                                </span>
+                                            </div>
+                                        @endif
                                         {{-- Editar documento --}}
-                                        <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                            <a href="{{ route('crud.files.edit', $file) }}" title="Editar documento">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                                </svg>
-                                            </a>
-                                        </div>
+                                        @can('Editar')
+                                            <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                                                <a href="{{ route('crud.files.edit', $file) }}" title="Editar documento">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        @endcan
                                         {{-- Eliminar documento --}}
-                                        <div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110">
-                                            <form action="{{ route('crud.files.destroy', $file) }}" method="POST">
-                                                @csrf
-                                                @method('delete')
-                                                <button 
-                                                    type="submit" 
-                                                    onclick="return confirm('¿Está seguro que desea eliminar este registro?')"
-                                                    title="Eliminar documento"
-                                                >
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
-                                        </div>
+                                        @can('Admin')
+                                            <div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110">
+                                                <form action="{{ route('crud.files.destroy', $file) }}" method="POST">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button 
+                                                        type="submit" 
+                                                        onclick="return confirm('¿Está seguro que desea eliminar este registro?')"
+                                                        title="Eliminar documento"
+                                                    >
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>

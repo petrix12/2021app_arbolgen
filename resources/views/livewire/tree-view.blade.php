@@ -6,7 +6,7 @@
         <div>
             <x-jet-application-logo class="block h-12 w-auto" />
         </div>
-        {{-- @can('crud.agclientes.create') --}}
+        @can('Editar')
         <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0 pt-4">
             <div class="inline-flex rounded-md shadow">
                 <a href="{{ route('crud.trees.create') }}" class="w-full cfrSefar inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white hover:text-blue-400 bg-gray-700 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -14,7 +14,7 @@
                 </a>
             </div>
         </div>
-        {{-- @endcan --}}
+        @endcan
     </div>
     
     <div class="bg-gray-200 bg-opacity-25">
@@ -58,11 +58,13 @@
                         <span class="vida" title="{{ GetVidaLugarAnho($id) }}">
                             {{ GetVidaAnho($id) }}
                         </span>
-                        <span class="editar" title="Editar">
-                            <a href="{{ route('crud.trees.edit', array($id, 'idPivote' => $idPivote)) }}">
-                                <i class="fas fa-user-edit text-red-700"></i>
-                            </a>
-                        </span>
+                        @can('Editar')
+                            <span class="editar" title="Editar">
+                                <a href="{{ route('crud.trees.edit', array($id, 'idPivote' => $idPivote)) }}">
+                                    <i class="fas fa-user-edit text-red-700"></i>
+                                </a>
+                            </span>
+                        @endcan
                         {{-- Documentos --}}
                         @if(TieneDocumentos($id))
                             <a href="{{ route('crud.files.show', array($id, 'idPivote' => $id)) }}">
@@ -117,11 +119,13 @@
                                         @endif
                                     </button>
                                 </span>
-                                <span class="editar" title="Editar">
-                                    <a href="{{ route('crud.trees.edit', array($idP, 'idPivote' => $idPivote)) }}">
-                                        <i class="fas fa-user-edit text-red-700"></i>
-                                    </a>
-                                </span>
+                                @can('Editar')
+                                    <span class="editar" title="Editar">
+                                        <a href="{{ route('crud.trees.edit', array($idP, 'idPivote' => $idPivote)) }}">
+                                            <i class="fas fa-user-edit text-red-700"></i>
+                                        </a>
+                                    </span>
+                                @endcan
                                 {{-- Documentos --}}
                                 @if(TieneDocumentos($idP))
                                     <a href="{{ route('crud.files.show', array($idP, 'idPivote' => $idPivote)) }}">
@@ -202,11 +206,13 @@
                                         @endif
                                     </button>
                                 </span>
-                                <span class="editar-abuelo" title="Editar">
-                                    <a href="{{ route('crud.trees.edit', array($idA, 'idPivote' => $idPivote)) }}">
-                                        <i class="fas fa-user-edit text-red-700"></i>
-                                    </a>
-                                </span>
+                                @can('Editar')
+                                    <span class="editar-abuelo" title="Editar">
+                                        <a href="{{ route('crud.trees.edit', array($idA, 'idPivote' => $idPivote)) }}">
+                                            <i class="fas fa-user-edit text-red-700"></i>
+                                        </a>
+                                    </span>
+                                @endcan
                                 {{-- Documentos --}}
                                 @if(TieneDocumentos($idA))
                                     <a href="{{ route('crud.files.show', array($idA, 'idPivote' => $id)) }}">
@@ -285,11 +291,13 @@
                                         @endif
                                     </button>
                                 </span>
-                                <span class="editar-bisabuelo" title="Editar">
-                                    <a href="{{ route('crud.trees.edit', array($idB, 'idPivote' => $idPivote)) }}">
-                                        <i class="fas fa-user-edit text-red-700"></i>
-                                    </a>
-                                </span>
+                                @can('Editar')
+                                    <span class="editar-bisabuelo" title="Editar">
+                                        <a href="{{ route('crud.trees.edit', array($idB, 'idPivote' => $idPivote)) }}">
+                                            <i class="fas fa-user-edit text-red-700"></i>
+                                        </a>
+                                    </span>
+                                @endcan
                                 {{-- Documentos --}}
                                 @if(TieneDocumentos($idB))
                                     <a href="{{ route('crud.files.show', array($idB, 'idPivote' => $id)) }}">
@@ -360,11 +368,13 @@
                                     @endif
                                 </button>
                             </span>
-                            <span class="editar-tatarabuelo" title="Editar">
-                                <a href="{{ route('crud.trees.edit', array($idT, 'idPivote' => $idPivote)) }}">
-                                    <i class="fas fa-user-edit text-red-700"></i>
-                                </a>
-                            </span>
+                            @can('Editar')
+                                <span class="editar-tatarabuelo" title="Editar">
+                                    <a href="{{ route('crud.trees.edit', array($idT, 'idPivote' => $idPivote)) }}">
+                                        <i class="fas fa-user-edit text-red-700"></i>
+                                    </a>
+                                </span>
+                            @endcan
                             {{-- Documentos --}}
                             @if(TieneDocumentos($idT))
                                 <a href="{{ route('crud.files.show', array($idT, 'idPivote' => $id)) }}">

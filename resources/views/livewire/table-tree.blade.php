@@ -3,15 +3,15 @@
         <div>
             <x-jet-application-logo class="block h-12 w-auto" />
         </div>
-        {{-- @can('crud.agclientes.create') --}}
-        <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0 pt-4">
-            <div class="inline-flex rounded-md shadow">
-                <a href="{{ route('crud.trees.create') }}" class="w-full cfrSefar inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white hover:text-blue-400 bg-gray-700 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    {{ __('Add person') }}
-                </a>
+        @can('Editar')
+            <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0 pt-4">
+                <div class="inline-flex rounded-md shadow">
+                    <a href="{{ route('crud.trees.create') }}" class="w-full cfrSefar inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white hover:text-blue-400 bg-gray-700 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        {{ __('Add person') }}
+                    </a>
+                </div>
             </div>
-        </div>
-        {{-- @endcan --}}
+        @endcan
     </div>
 
     <div class="min-w-screen {{-- min-h-screen --}} flex items-center justify-center bg-gray-100 font-sans overflow-hidden">
@@ -123,13 +123,15 @@
                                             </a>
                                         </div>
                                         {{-- Editar persona --}}
-                                        <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                            <a href="{{ route('crud.trees.edit', $tree->id) }}" title="Editar persona">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                                </svg>
-                                            </a>
-                                        </div>
+                                        @can('Editar')
+                                            <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                                                <a href="{{ route('crud.trees.edit', $tree->id) }}" title="Editar persona">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        @endcan
                                         {{-- Mostrar documentos --}}
                                         <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                                             <a href="{{ route('crud.files.show', $tree->id) }}" title="Mostrar documentos">
@@ -143,19 +145,21 @@
                                             </a>
                                         </div>
                                         {{-- Eliminar persona --}}
-                                        <div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110">
-                                            <form action="{{ route('crud.trees.destroy', $tree) }}" method="POST">
-                                                @csrf
-                                                @method('delete')
-                                                <button 
-                                                    type="submit" 
-                                                    onclick="return confirm('¿Está seguro que desea eliminar este registro?')"
-                                                    title="Eliminar persona"
-                                                >
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
-                                        </div>
+                                        @can('Admin')
+                                            <div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110">
+                                                <form action="{{ route('crud.trees.destroy', $tree) }}" method="POST">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button 
+                                                        type="submit" 
+                                                        onclick="return confirm('¿Está seguro que desea eliminar este registro?')"
+                                                        title="Eliminar persona"
+                                                    >
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>

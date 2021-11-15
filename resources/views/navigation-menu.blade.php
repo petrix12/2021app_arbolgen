@@ -7,25 +7,35 @@ if(!Auth::guest()){
             'route' => route('home'),
             'active' => request()->routeIs('home')
         ],
-        [
-            'name' => 'Árbol',
-            'route' => route('dashboard', 1),
-            'active' => request()->routeIs('dashboard')
-        ],
-        [
-            'name' => 'Lista',
-            'route' => route('crud.trees.index'),
-            'active' => request()->routeIs('crud.trees.*')
-        ]
     ];
+
+    if(Auth::user()->hasPermissionTo('VerArboles')){
+        array_push($nav_links,
+            [
+                'name' => 'Árbol',
+                'route' => route('dashboard', 1),
+                'active' => request()->routeIs('dashboard')
+            ],
+            [
+                'name' => 'Lista',
+                'route' => route('crud.trees.index'),
+                'active' => request()->routeIs('crud.trees.*')
+            ],
+            [
+                'name' => 'Documentos',
+                'route' => route('crud.files.index'),
+                'active' => request()->routeIs('crud.files.*')
+            ]
+        );
+    }
 
     if(Auth::user()->hasRole('Admin')){
         array_push($nav_links,
-            [
+            /* [
                 'name' => 'Documentacion',
                 'route' => route('documentacion'),
                 'active' => request()->routeIs('documentacion')
-            ],
+            ], */
             [
                 'name' => 'Administrar',
                 'route' => route('admin.home'),
