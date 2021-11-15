@@ -54,6 +54,7 @@ class TreeController extends Controller
         ]);
 
         $tree = Tree::create($request->all());
+        $tree->update(['creado_por' => Auth()->user()->email]);
         
         // Establecer id_padre o id_madre en el hijo
         if($request->idHijo){
@@ -128,6 +129,7 @@ class TreeController extends Controller
         ]);
 
         $tree->update($request->all());
+        $tree->update(['modificado_por' => Auth()->user()->email]);
 
         // Guardar foto
         $img_error = null;

@@ -34,6 +34,8 @@ class CreateTreesTable extends Migration
             $table->integer('anho_def')->nullable();
             $table->string('lugar_def')->nullable();
             $table->text('observaciones')->nullable();
+            $table->string('creado_por')->nullable();
+            $table->string('modificado_por')->nullable();
             $table->timestamps();
         });
     }
