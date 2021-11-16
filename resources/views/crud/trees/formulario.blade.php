@@ -1,5 +1,22 @@
 @csrf
 <div class="container">
+    {{-- Mostrar Foto --}}
+    @if ($tree->id)
+        <div class="sm:flex">
+            <div class="px-2 flex items-center">
+                @if (file_exists('storage/assets/images/personas/' . $tree->id . '.jpg'))
+                    <div class="flex-shrink-0 h-24 w-24">
+                        <img class="h-24 w-24 rounded-full" src="{{ asset('storage/assets/images/personas/' . $tree->id . '.jpg') }}" alt="Foto Persona">
+                    </div>
+                @else
+                    <div class="flex-shrink-0 h-24 w-24">
+                        <img class="h-24 w-24 rounded-full" src="{{ asset('storage/assets/images/personas/0.jpg') }}" alt="Foto Persona">
+                    </div>
+                @endif
+            </div>
+        </div>
+    @endif
+    
     {{-- Fila 1: Nombres y apellidos --}}
     <div class="sm:flex">
         <div class="px-1 py-2 m-2 flex-1">    {{-- nombres --}}
@@ -33,51 +50,53 @@
         </div>
     </div>
 
-    {{-- Fila 2: Datos vinculantes --}}
-    <div class="sm:flex">
-        <div class="px-1 py-2 m-2 flex-1">    {{-- id_padre --}}
-            <div>
-                <label for="id_padre" class="block text-sm font-medium text-gray-700">ID Padre</label>
-                <input value="{{ old('id_padre', $tree->id_padre ) }}" type="number" min="1" name="id_padre" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                @error('id_padre')
-                    <small style="color:red">*{{ $message }}*</small>
-                @enderror
+    @empty($idHijo)
+        {{-- Fila 2: Datos vinculantes --}}
+        <div class="sm:flex">
+            <div class="px-1 py-2 m-2 flex-1">    {{-- id_padre --}}
+                <div>
+                    <label for="id_padre" class="block text-sm font-medium text-gray-700">ID Padre</label>
+                    <input value="{{ old('id_padre', $tree->id_padre ) }}" type="number" min="1" name="id_padre" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    @error('id_padre')
+                        <small style="color:red">*{{ $message }}*</small>
+                    @enderror
+                </div>
             </div>
-        </div>
 
-        <div class="px-1 py-2 m-2 flex-1">    {{-- id_madre --}}
-            <div>
-                <label for="id_madre" class="block text-sm font-medium text-gray-700">ID Madre</label>
-                <input value="{{ old('id_madre', $tree->id_madre ) }}" type="number" min="1" name="id_madre" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                @error('id_madre')
-                    <small style="color:red">*{{ $message }}*</small>
-                @enderror
+            <div class="px-1 py-2 m-2 flex-1">    {{-- id_madre --}}
+                <div>
+                    <label for="id_madre" class="block text-sm font-medium text-gray-700">ID Madre</label>
+                    <input value="{{ old('id_madre', $tree->id_madre ) }}" type="number" min="1" name="id_madre" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    @error('id_madre')
+                        <small style="color:red">*{{ $message }}*</small>
+                    @enderror
+                </div>
             </div>
-        </div>
 
-        <div class="px-1 py-2 m-2 flex-1">    {{-- sexo --}}
-            <div>
-                <label for="sexo" class="block text-sm font-medium text-gray-700" title="Sexo">Sexo</label>
-                <select name="sexo" autocomplete="on" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                    <option value="{{ null }}">-</option>
-                    @if (old('sexo', $tree->sexo) == "M")
-                        <option title="Masculino" selected>M</option>
-                    @else
-                        <option title="Masculino">M</option>
-                    @endif
-                    
-                    @if (old('sexo', $tree->sexo) == "F")
-                        <option title="Masculino" selected>F</option>
-                    @else
-                        <option title="Masculino">F</option>
-                    @endif
-                </select>
-                @error('sexo')
-                    <small style="color:red">*{{ $message }}*</small>
-                @enderror
+            <div class="px-1 py-2 m-2 flex-1">    {{-- sexo --}}
+                <div>
+                    <label for="sexo" class="block text-sm font-medium text-gray-700" title="Sexo">Sexo</label>
+                    <select name="sexo" autocomplete="on" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="{{ null }}">-</option>
+                        @if (old('sexo', $tree->sexo) == "M")
+                            <option title="Masculino" selected>M</option>
+                        @else
+                            <option title="Masculino">M</option>
+                        @endif
+                        
+                        @if (old('sexo', $tree->sexo) == "F")
+                            <option title="Masculino" selected>F</option>
+                        @else
+                            <option title="Masculino">F</option>
+                        @endif
+                    </select>
+                    @error('sexo')
+                        <small style="color:red">*{{ $message }}*</small>
+                    @enderror
+                </div>
             </div>
         </div>
-    </div>
+    @endempty
 
     {{-- Fila 3: Datos de nacimiento --}}
     <div class="sm:flex">
@@ -220,7 +239,7 @@
         </div>
     </div>
 
-    {{-- Foto --}}
+    {{-- Cargar Foto --}}
     <div class="sm:flex">
         <div class="px-1 py-2 m-2 flex-1">    {{-- foto --}}
             <div> 
