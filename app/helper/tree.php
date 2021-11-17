@@ -2,6 +2,7 @@
 
 use App\Models\File;
 use App\Models\Tree;
+use App\Models\User;
 
 /* * * * * ÁRBOL  * * * * */
 
@@ -453,10 +454,48 @@ function GetVidaLugarAnho($id){
     return $nacimiento . ' - ' . $defuncion;
 }
 
-/* * * * * DOCUMENTOS  * * * * */
+/* * * * * OTRAS FUNCIONES  * * * * */
 
 // Verificar si una persona tiene documentos
 function TieneDocumentos($id){
     $documentos = File::where('tree_id', 'LIKE', $id);
     return $documentos->count() ? true : false;
+}
+
+// Obtener apellido principal de la aplicación
+function GetApellidoPrincipal(){
+    try{
+        $nombre = null;
+
+        if (Auth()->user()->default_name_family){
+            $nombre = Auth()->user()->default_name_family;
+        }else{
+            if(User::find(1)->default_name_family){
+                $nombre = User::find(1)->default_name_family;
+            }else{
+                $nombre = 'familiar';
+            }
+        }
+        return 'Árbol genealógico ' . $nombre;
+    }catch(Exception $e){
+        return 'Árbol genealógico familiar';
+    }
+}
+
+// Obtener persona por defecto
+function GetDefaultPerson(){
+    try{
+        $tree_id = 1;
+
+        if (Auth()->user()->default_tree_id){
+            $tree_id = Auth()->user()->default_tree_id;
+        }else{
+            if(User::find(1)->default_tree_id){
+                $tree_id = User::find(1)->default_tree_id;
+            }
+        }
+        return $tree_id;
+    }catch(Exception $e){
+        return 1;
+    }  
 }

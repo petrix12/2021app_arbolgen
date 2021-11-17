@@ -29,6 +29,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'default_name_family',
+        'default_tree_id'
     ];
 
     /**

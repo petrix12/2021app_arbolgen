@@ -10,3 +10,5 @@ Route::get('', [HomeController::class, 'index'])->middleware('can:Admin')->name(
 Route::resource('roles', RoleController::class)->names('roles');
 
 Route::resource('users', UserController::class)->only(['index', 'edit', 'update'])->names('users');
+
+Route::put('customize/{user}', [UserController::class, 'customize'])->middleware('can:Admin')->name('customize');

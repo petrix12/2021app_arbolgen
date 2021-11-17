@@ -13,7 +13,7 @@ if(!Auth::guest()){
         array_push($nav_links,
             [
                 'name' => 'Árbol',
-                'route' => route('dashboard', 1),
+                'route' => route('dashboard', GetDefaultPerson()),
                 'active' => request()->routeIs('dashboard')
             ],
             [

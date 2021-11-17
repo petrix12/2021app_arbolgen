@@ -91,4 +91,9 @@ class UserController extends Controller
     {
         //
     }
+
+    public function customize(Request $request, User $user){
+        $user->update($request->all());
+        return redirect()->route('admin.users.edit', $user);
+    }
 }

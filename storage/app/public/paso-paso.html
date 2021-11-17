@@ -238,7 +238,7 @@ FILESYSTEM_DRIVER=public
     */</span>
     <span class="hljs-variable">$user</span> = User::create([
         <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Pedro Jesús Bazó Canelón'</span>,
-        <span class="hljs-string">'email'</span> =&gt; <span class="hljs-string">'<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3557544f5a1b455051475a755258545c591b565a58">[email&#160;protected]</a>'</span>,
+        <span class="hljs-string">'email'</span> =&gt; <span class="hljs-string">'<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="385a59425716485d5c4a57785f55595154165b5755">[email&#160;protected]</a>'</span>,
         <span class="hljs-string">'password'</span> =&gt; bcrypt(<span class="hljs-string">'12345678'</span>)
     ]);
     <span class="hljs-variable">$user</span>-&gt;assignRole(<span class="hljs-string">'Admin'</span>);
@@ -3032,8 +3032,25 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 ≡
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="2900" data-line-end="3145">Crear formulario <strong>resources\views\crud\trees\formulario.blade.php</strong> para creación y edición de personas del árbol:<pre><code class="has-line-data" data-line-start="2902" data-line-end="3145" class="language-php">@csrf
+<li class="has-line-data" data-line-start="2900" data-line-end="3164">Crear formulario <strong>resources\views\crud\trees\formulario.blade.php</strong> para creación y edición de personas del árbol:<pre><code class="has-line-data" data-line-start="2902" data-line-end="3164" class="language-php">@csrf
 &lt;div class="container"&gt;
+    {{-- Mostrar Foto --}}
+    @if ($tree-&gt;id)
+        &lt;div class="sm:flex"&gt;
+            &lt;div class="px-2 flex items-center"&gt;
+                @if (file_exists('storage/assets/images/personas/' . $tree-&gt;id . '.jpg'))
+                    &lt;div class="flex-shrink-0 h-24 w-24"&gt;
+                        &lt;img class="h-24 w-24 rounded-full" src="{{ asset('storage/assets/images/personas/' . $tree-&gt;id . '.jpg') }}" alt="Foto Persona"&gt;
+                    &lt;/div&gt;
+                @else
+                    &lt;div class="flex-shrink-0 h-24 w-24"&gt;
+                        &lt;img class="h-24 w-24 rounded-full" src="{{ asset('storage/assets/images/personas/0.jpg') }}" alt="Foto Persona"&gt;
+                    &lt;/div&gt;
+                @endif
+            &lt;/div&gt;
+        &lt;/div&gt;
+    @endif
+    
     {{-- Fila 1: Nombres y apellidos --}}
     &lt;div class="sm:flex"&gt;
         &lt;div class="px-1 py-2 m-2 flex-1"&gt;    {{-- nombres --}}
@@ -3067,51 +3084,53 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
         &lt;/div&gt;
     &lt;/div&gt;
 
-    {{-- Fila 2: Datos vinculantes --}}
-    &lt;div class="sm:flex"&gt;
-        &lt;div class="px-1 py-2 m-2 flex-1"&gt;    {{-- id_padre --}}
-            &lt;div&gt;
-                &lt;label for="id_padre" class="block text-sm font-medium text-gray-700"&gt;ID Padre&lt;/label&gt;
-                &lt;input value="{{ old('id_padre', $tree-&gt;id_padre ) }}" type="number" min="1" name="id_padre" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"&gt;
-                @error('id_padre')
-                    &lt;small style="color:red"&gt;*{{ $message }}*&lt;/small&gt;
-                @enderror
+    @empty($idHijo)
+        {{-- Fila 2: Datos vinculantes --}}
+        &lt;div class="sm:flex"&gt;
+            &lt;div class="px-1 py-2 m-2 flex-1"&gt;    {{-- id_padre --}}
+                &lt;div&gt;
+                    &lt;label for="id_padre" class="block text-sm font-medium text-gray-700"&gt;ID Padre&lt;/label&gt;
+                    &lt;input value="{{ old('id_padre', $tree-&gt;id_padre ) }}" type="number" min="1" name="id_padre" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"&gt;
+                    @error('id_padre')
+                        &lt;small style="color:red"&gt;*{{ $message }}*&lt;/small&gt;
+                    @enderror
+                &lt;/div&gt;
             &lt;/div&gt;
-        &lt;/div&gt;
 
-        &lt;div class="px-1 py-2 m-2 flex-1"&gt;    {{-- id_madre --}}
-            &lt;div&gt;
-                &lt;label for="id_madre" class="block text-sm font-medium text-gray-700"&gt;ID Madre&lt;/label&gt;
-                &lt;input value="{{ old('id_madre', $tree-&gt;id_madre ) }}" type="number" min="1" name="id_madre" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"&gt;
-                @error('id_madre')
-                    &lt;small style="color:red"&gt;*{{ $message }}*&lt;/small&gt;
-                @enderror
+            &lt;div class="px-1 py-2 m-2 flex-1"&gt;    {{-- id_madre --}}
+                &lt;div&gt;
+                    &lt;label for="id_madre" class="block text-sm font-medium text-gray-700"&gt;ID Madre&lt;/label&gt;
+                    &lt;input value="{{ old('id_madre', $tree-&gt;id_madre ) }}" type="number" min="1" name="id_madre" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"&gt;
+                    @error('id_madre')
+                        &lt;small style="color:red"&gt;*{{ $message }}*&lt;/small&gt;
+                    @enderror
+                &lt;/div&gt;
             &lt;/div&gt;
-        &lt;/div&gt;
 
-        &lt;div class="px-1 py-2 m-2 flex-1"&gt;    {{-- sexo --}}
-            &lt;div&gt;
-                &lt;label for="sexo" class="block text-sm font-medium text-gray-700" title="Sexo"&gt;Sexo&lt;/label&gt;
-                &lt;select name="sexo" autocomplete="on" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"&gt;
-                    &lt;option value="{{ null }}"&gt;-&lt;/option&gt;
-                    @if (old('sexo', $tree-&gt;sexo) == "M")
-                        &lt;option title="Masculino" selected&gt;M&lt;/option&gt;
-                    @else
-                        &lt;option title="Masculino"&gt;M&lt;/option&gt;
-                    @endif
-                    
-                    @if (old('sexo', $tree-&gt;sexo) == "F")
-                        &lt;option title="Masculino" selected&gt;F&lt;/option&gt;
-                    @else
-                        &lt;option title="Masculino"&gt;F&lt;/option&gt;
-                    @endif
-                &lt;/select&gt;
-                @error('sexo')
-                    &lt;small style="color:red"&gt;*{{ $message }}*&lt;/small&gt;
-                @enderror
+            &lt;div class="px-1 py-2 m-2 flex-1"&gt;    {{-- sexo --}}
+                &lt;div&gt;
+                    &lt;label for="sexo" class="block text-sm font-medium text-gray-700" title="Sexo"&gt;Sexo&lt;/label&gt;
+                    &lt;select name="sexo" autocomplete="on" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"&gt;
+                        &lt;option value="{{ null }}"&gt;-&lt;/option&gt;
+                        @if (old('sexo', $tree-&gt;sexo) == "M")
+                            &lt;option title="Masculino" selected&gt;M&lt;/option&gt;
+                        @else
+                            &lt;option title="Masculino"&gt;M&lt;/option&gt;
+                        @endif
+                        
+                        @if (old('sexo', $tree-&gt;sexo) == "F")
+                            &lt;option title="Masculino" selected&gt;F&lt;/option&gt;
+                        @else
+                            &lt;option title="Masculino"&gt;F&lt;/option&gt;
+                        @endif
+                    &lt;/select&gt;
+                    @error('sexo')
+                        &lt;small style="color:red"&gt;*{{ $message }}*&lt;/small&gt;
+                    @enderror
+                &lt;/div&gt;
             &lt;/div&gt;
         &lt;/div&gt;
-    &lt;/div&gt;
+    @endempty
 
     {{-- Fila 3: Datos de nacimiento --}}
     &lt;div class="sm:flex"&gt;
@@ -3254,7 +3273,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
         &lt;/div&gt;
     &lt;/div&gt;
 
-    {{-- Foto --}}
+    {{-- Cargar Foto --}}
     &lt;div class="sm:flex"&gt;
         &lt;div class="px-1 py-2 m-2 flex-1"&gt;    {{-- foto --}}
             &lt;div&gt; 
@@ -3276,7 +3295,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 &lt;/div&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="3145" data-line-end="3203">Crear vista <strong>resources\views\crud\trees\create.blade.php</strong>:<pre><code class="has-line-data" data-line-start="3147" data-line-end="3203" class="language-php">&lt;x-app-layout&gt;
+<li class="has-line-data" data-line-start="3164" data-line-end="3222">Crear vista <strong>resources\views\crud\trees\create.blade.php</strong>:<pre><code class="has-line-data" data-line-start="3166" data-line-end="3222" class="language-php">&lt;x-app-layout&gt;
     &lt;x-slot name="header"&gt;
         &lt;h2 class="font-semibold text-xl text-gray-800 leading-tight"&gt;
             Añadir persona
@@ -3333,7 +3352,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 &lt;/x-app-layout&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="3203" data-line-end="3254">Crear vista <strong>resources\views\crud\trees\edit.blade.php</strong>:<pre><code class="has-line-data" data-line-start="3205" data-line-end="3254" class="language-php">&lt;x-app-layout&gt;
+<li class="has-line-data" data-line-start="3222" data-line-end="3273">Crear vista <strong>resources\views\crud\trees\edit.blade.php</strong>:<pre><code class="has-line-data" data-line-start="3224" data-line-end="3273" class="language-php">&lt;x-app-layout&gt;
     &lt;x-slot name="header"&gt;
         &lt;h2 class="font-semibold text-xl text-gray-800 leading-tight"&gt;
             Editando a {{ GetNombreCompleto($tree-&gt;id) }}
@@ -3383,17 +3402,17 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 &lt;/x-app-layout&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="3254" data-line-end="3259">Crear commit:
+<li class="has-line-data" data-line-start="3273" data-line-end="3278">Crear commit:
 <ul>
-<li class="has-line-data" data-line-start="3255" data-line-end="3256">$ git add .</li>
-<li class="has-line-data" data-line-start="3256" data-line-end="3257">$ git commit -m “Creación de CRUD Tree para árbol genealógico”</li>
-<li class="has-line-data" data-line-start="3257" data-line-end="3259">$ git push -u origin main</li>
+<li class="has-line-data" data-line-start="3274" data-line-end="3275">$ git add .</li>
+<li class="has-line-data" data-line-start="3275" data-line-end="3276">$ git commit -m “Creación de CRUD Tree para árbol genealógico”</li>
+<li class="has-line-data" data-line-start="3276" data-line-end="3278">$ git push -u origin main</li>
 </ul>
 </li>
 </ol>
-<h2 class="code-line" data-line-start=3259 data-line-end=3260><a id="Agregar_funcionalidad_al_rbol_genealgico_3259"></a>Agregar funcionalidad al árbol genealógico</h2>
+<h2 class="code-line" data-line-start=3278 data-line-end=3279><a id="Agregar_funcionalidad_al_rbol_genealgico_3278"></a>Agregar funcionalidad al árbol genealógico</h2>
 <ol>
-<li class="has-line-data" data-line-start="3260" data-line-end="3655">Modificar vista componente livewire <strong>resources\views\livewire\tree-view.blade.php</strong>:<pre><code class="has-line-data" data-line-start="3262" data-line-end="3655" class="language-php">@php
+<li class="has-line-data" data-line-start="3279" data-line-end="3674">Modificar vista componente livewire <strong>resources\views\livewire\tree-view.blade.php</strong>:<pre><code class="has-line-data" data-line-start="3281" data-line-end="3674" class="language-php">@php
     $idPivote = $id;
 @endphp
 &lt;div&gt;
@@ -3787,7 +3806,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 &lt;/div&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="3655" data-line-end="3691">Programar controlador componente livewire <strong>app\Http\Livewire\TreeView.php</strong>:<pre><code class="has-line-data" data-line-start="3657" data-line-end="3691" class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
+<li class="has-line-data" data-line-start="3674" data-line-end="3710">Programar controlador componente livewire <strong>app\Http\Livewire\TreeView.php</strong>:<pre><code class="has-line-data" data-line-start="3676" data-line-end="3710" class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
 
 <span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Livewire</span>;
 
@@ -3822,17 +3841,17 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 }   
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="3691" data-line-end="3696">Crear commit:
+<li class="has-line-data" data-line-start="3710" data-line-end="3715">Crear commit:
 <ul>
-<li class="has-line-data" data-line-start="3692" data-line-end="3693">$ git add .</li>
-<li class="has-line-data" data-line-start="3693" data-line-end="3694">$ git commit -m “Agregar funcionalidad al árbol genealógico”</li>
-<li class="has-line-data" data-line-start="3694" data-line-end="3696">$ git push -u origin main</li>
+<li class="has-line-data" data-line-start="3711" data-line-end="3712">$ git add .</li>
+<li class="has-line-data" data-line-start="3712" data-line-end="3713">$ git commit -m “Agregar funcionalidad al árbol genealógico”</li>
+<li class="has-line-data" data-line-start="3713" data-line-end="3715">$ git push -u origin main</li>
 </ul>
 </li>
 </ol>
-<h2 class="code-line" data-line-start=3696 data-line-end=3697><a id="Aadir_hijo_3696"></a>Añadir hijo</h2>
+<h2 class="code-line" data-line-start=3715 data-line-end=3716><a id="Aadir_hijo_3715"></a>Añadir hijo</h2>
 <ol>
-<li class="has-line-data" data-line-start="3697" data-line-end="3821">Modificar vista del componente livewire <strong>resources\views\livewire\tree-view.blade.php</strong>:<pre><code class="has-line-data" data-line-start="3699" data-line-end="3821" class="language-php">≡
+<li class="has-line-data" data-line-start="3716" data-line-end="3840">Modificar vista del componente livewire <strong>resources\views\livewire\tree-view.blade.php</strong>:<pre><code class="has-line-data" data-line-start="3718" data-line-end="3840" class="language-php">≡
 &lt;div&gt;
     &lt;div class="p-6 sm:px-20 bg-white border-b border-gray-200"&gt;
         &lt;div&gt;
@@ -3955,7 +3974,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 &lt;/div&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="3821" data-line-end="3834">Modificar el método <strong>create</strong> del controlador <strong>app\Http\Controllers\TreeController.php</strong>:<pre><code class="has-line-data" data-line-start="3823" data-line-end="3834" class="language-php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">create</span><span class="hljs-params">(Request <span class="hljs-variable">$request</span>)</span>
+<li class="has-line-data" data-line-start="3840" data-line-end="3853">Modificar el método <strong>create</strong> del controlador <strong>app\Http\Controllers\TreeController.php</strong>:<pre><code class="has-line-data" data-line-start="3842" data-line-end="3853" class="language-php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">create</span><span class="hljs-params">(Request <span class="hljs-variable">$request</span>)</span>
 </span>{
     <span class="hljs-variable">$tree</span> = <span class="hljs-keyword">new</span> Tree();
     <span class="hljs-variable">$idPivote</span> = <span class="hljs-variable">$request</span>-&gt;idPivote;
@@ -3967,7 +3986,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 }
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="3834" data-line-end="3864">Modificar vista <strong>resources\views\crud\trees\create.blade.php</strong>:<pre><code class="has-line-data" data-line-start="3836" data-line-end="3864" class="language-php">{!! Form::open(['route' =&gt; 'crud.trees.store', 'files' =&gt; true,]) !!}
+<li class="has-line-data" data-line-start="3853" data-line-end="3883">Modificar vista <strong>resources\views\crud\trees\create.blade.php</strong>:<pre><code class="has-line-data" data-line-start="3855" data-line-end="3883" class="language-php">{!! Form::open(['route' =&gt; 'crud.trees.store', 'files' =&gt; true,]) !!}
 &lt;div class="bg-gray-200 bg-opacity-25"&gt;
     &lt;div class="p-6 border-t border-gray-200 md:border-l"&gt;
         &lt;div class="container relative"&gt;
@@ -3996,22 +4015,22 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 {!! Form::close() !!}
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="3864" data-line-end="3869">Crear commit:
+<li class="has-line-data" data-line-start="3883" data-line-end="3888">Crear commit:
 <ul>
-<li class="has-line-data" data-line-start="3865" data-line-end="3866">$ git add .</li>
-<li class="has-line-data" data-line-start="3866" data-line-end="3867">$ git commit -m “Añadir hijo”</li>
-<li class="has-line-data" data-line-start="3867" data-line-end="3869">$ git push -u origin main</li>
+<li class="has-line-data" data-line-start="3884" data-line-end="3885">$ git add .</li>
+<li class="has-line-data" data-line-start="3885" data-line-end="3886">$ git commit -m “Añadir hijo”</li>
+<li class="has-line-data" data-line-start="3886" data-line-end="3888">$ git push -u origin main</li>
 </ul>
 </li>
 </ol>
-<h2 class="code-line" data-line-start=3869 data-line-end=3870><a id="Agregar_funcionalidad_para_la_carga_de_enlaces_y_documentos_3869"></a>Agregar funcionalidad para la carga de enlaces y documentos</h2>
+<h2 class="code-line" data-line-start=3888 data-line-end=3889><a id="Agregar_funcionalidad_para_la_carga_de_enlaces_y_documentos_3888"></a>Agregar funcionalidad para la carga de enlaces y documentos</h2>
 <ol>
-<li class="has-line-data" data-line-start="3870" data-line-end="3872">Crear modelo <strong>File</strong> con su migración y controlador con recursos:
+<li class="has-line-data" data-line-start="3889" data-line-end="3891">Crear modelo <strong>File</strong> con su migración y controlador con recursos:
 <ul>
-<li class="has-line-data" data-line-start="3871" data-line-end="3872">$ php artisan make:model File -mcr</li>
+<li class="has-line-data" data-line-start="3890" data-line-end="3891">$ php artisan make:model File -mcr</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="3872" data-line-end="3887">Definir campos en el método <strong>up</strong> de la migración <strong>database\migrations\2021_11_12_142916_create_files_table.php</strong>:<pre><code class="has-line-data" data-line-start="3874" data-line-end="3887" class="language-php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">up</span><span class="hljs-params">()</span>
+<li class="has-line-data" data-line-start="3891" data-line-end="3906">Definir campos en el método <strong>up</strong> de la migración <strong>database\migrations\2021_11_12_142916_create_files_table.php</strong>:<pre><code class="has-line-data" data-line-start="3893" data-line-end="3906" class="language-php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">up</span><span class="hljs-params">()</span>
 </span>{
     Schema::create(<span class="hljs-string">'files'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Blueprint <span class="hljs-variable">$table</span>)</span> </span>{
         <span class="hljs-variable">$table</span>-&gt;id();
@@ -4025,7 +4044,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 }
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="3887" data-line-end="3896">Habilitar campos de asignación masiva en <strong>app\Models\File.php</strong>:<pre><code class="has-line-data" data-line-start="3889" data-line-end="3896" class="language-php"><span class="hljs-keyword">protected</span> <span class="hljs-variable">$fillable</span> = [
+<li class="has-line-data" data-line-start="3906" data-line-end="3915">Habilitar campos de asignación masiva en <strong>app\Models\File.php</strong>:<pre><code class="has-line-data" data-line-start="3908" data-line-end="3915" class="language-php"><span class="hljs-keyword">protected</span> <span class="hljs-variable">$fillable</span> = [
     <span class="hljs-string">'nombre'</span>,
     <span class="hljs-string">'ruta'</span>,
     <span class="hljs-string">'es_enlace'</span>,
@@ -4033,12 +4052,12 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 ];
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="3896" data-line-end="3898">Ejecutar las migraciones:
+<li class="has-line-data" data-line-start="3915" data-line-end="3917">Ejecutar las migraciones:
 <ul>
-<li class="has-line-data" data-line-start="3897" data-line-end="3898">$ php artisan migrate</li>
+<li class="has-line-data" data-line-start="3916" data-line-end="3917">$ php artisan migrate</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="3898" data-line-end="3912">Agregar rutas para el CRUD del modelo <strong>File</strong> en <strong>routes\web.php</strong>:<pre><code class="has-line-data" data-line-start="3900" data-line-end="3908" class="language-php"><span class="hljs-comment">// Grupo de rutas CRUD</span>
+<li class="has-line-data" data-line-start="3917" data-line-end="3931">Agregar rutas para el CRUD del modelo <strong>File</strong> en <strong>routes\web.php</strong>:<pre><code class="has-line-data" data-line-start="3919" data-line-end="3927" class="language-php"><span class="hljs-comment">// Grupo de rutas CRUD</span>
 Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="hljs-string">'auth'</span>], <span class="hljs-string">'as'</span> =&gt; <span class="hljs-string">'crud.'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
     Route::resource(<span class="hljs-string">'trees'</span>, TreeController::class)-&gt;names(<span class="hljs-string">'trees'</span>)
         -&gt;middleware(<span class="hljs-string">'can:VerArboles'</span>);
@@ -4047,17 +4066,17 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 })
 </code></pre>
 <ul>
-<li class="has-line-data" data-line-start="3908" data-line-end="3909">Importar la definción del modelo <strong>FileController</strong>:</li>
+<li class="has-line-data" data-line-start="3927" data-line-end="3928">Importar la definción del modelo <strong>FileController</strong>:</li>
 </ul>
-<pre><code class="has-line-data" data-line-start="3910" data-line-end="3912" class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">FileController</span>;
+<pre><code class="has-line-data" data-line-start="3929" data-line-end="3931" class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">FileController</span>;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="3912" data-line-end="3914">Crear componente de livewire para mostrar los registros de la table files:
+<li class="has-line-data" data-line-start="3931" data-line-end="3933">Crear componente de livewire para mostrar los registros de la table files:
 <ul>
-<li class="has-line-data" data-line-start="3913" data-line-end="3914">$ php artisan make:livewire TableFile</li>
+<li class="has-line-data" data-line-start="3932" data-line-end="3933">$ php artisan make:livewire TableFile</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="3914" data-line-end="3966">Programar controlador del componente <strong>app\Http\Livewire\TableFile.php</strong>:<pre><code class="has-line-data" data-line-start="3916" data-line-end="3966" class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
+<li class="has-line-data" data-line-start="3933" data-line-end="3985">Programar controlador del componente <strong>app\Http\Livewire\TableFile.php</strong>:<pre><code class="has-line-data" data-line-start="3935" data-line-end="3985" class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
 
 <span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Livewire</span>;
 
@@ -4108,7 +4127,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 }
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="3966" data-line-end="4071">Diseñar vista del componente <strong>resources\views\livewire\table-file.blade.php</strong>:<pre><code class="has-line-data" data-line-start="3968" data-line-end="4071" class="language-php">&lt;div class="overflow-x-auto"&gt;
+<li class="has-line-data" data-line-start="3985" data-line-end="4090">Diseñar vista del componente <strong>resources\views\livewire\table-file.blade.php</strong>:<pre><code class="has-line-data" data-line-start="3987" data-line-end="4090" class="language-php">&lt;div class="overflow-x-auto"&gt;
     &lt;div class="p-6 sm:px-20 bg-white border-b border-gray-200"&gt;
         &lt;div&gt;
             &lt;x-jet-application-logo class="block h-12 w-auto" /&gt;
@@ -4212,7 +4231,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 &lt;/div&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="4071" data-line-end="4300">Programar el controlador <strong>app\Http\Controllers\FileController.php</strong>:<pre><code class="has-line-data" data-line-start="4073" data-line-end="4300" class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
+<li class="has-line-data" data-line-start="4090" data-line-end="4319">Programar el controlador <strong>app\Http\Controllers\FileController.php</strong>:<pre><code class="has-line-data" data-line-start="4092" data-line-end="4319" class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
 
 <span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>;
 
@@ -4440,7 +4459,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 }
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="4300" data-line-end="4369">Diseñar formulario <strong>resources\views\crud\files\formulario.blade.php</strong> para capturar los registros del CRUD <strong>File</strong>:<pre><code class="has-line-data" data-line-start="4302" data-line-end="4369" class="language-php">@csrf
+<li class="has-line-data" data-line-start="4319" data-line-end="4388">Diseñar formulario <strong>resources\views\crud\files\formulario.blade.php</strong> para capturar los registros del CRUD <strong>File</strong>:<pre><code class="has-line-data" data-line-start="4321" data-line-end="4388" class="language-php">@csrf
 &lt;div class="container"&gt;
     {{-- Fila 1: Documento --}}
     &lt;div class="sm:flex"&gt;
@@ -4508,7 +4527,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 &lt;/div&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="4369" data-line-end="4450">Diseñar la vista <strong>resources\views\crud\files\create.blade.php</strong>:<pre><code class="has-line-data" data-line-start="4371" data-line-end="4450" class="language-php">&lt;x-app-layout&gt;
+<li class="has-line-data" data-line-start="4388" data-line-end="4469">Diseñar la vista <strong>resources\views\crud\files\create.blade.php</strong>:<pre><code class="has-line-data" data-line-start="4390" data-line-end="4469" class="language-php">&lt;x-app-layout&gt;
     @if (ExistePersona($tree_id))
         &lt;x-slot name="header"&gt;
             &lt;h2 class="font-semibold text-xl text-gray-800 leading-tight"&gt;
@@ -4588,7 +4607,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 &lt;/x-app-layout&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="4450" data-line-end="4532">Diseñar la vista <strong>resources\views\crud\files\edit.blade.php</strong>:<pre><code class="has-line-data" data-line-start="4452" data-line-end="4532" class="language-php">&lt;x-app-layout&gt;
+<li class="has-line-data" data-line-start="4469" data-line-end="4551">Diseñar la vista <strong>resources\views\crud\files\edit.blade.php</strong>:<pre><code class="has-line-data" data-line-start="4471" data-line-end="4551" class="language-php">&lt;x-app-layout&gt;
     @if (ExistePersona($tree_id))
         &lt;x-slot name="header"&gt;
             &lt;h2 class="font-semibold text-xl text-gray-800 leading-tight"&gt;
@@ -4669,7 +4688,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 &lt;/x-app-layout&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="4532" data-line-end="4591">Modificar la vista del componente <strong>resources\views\livewire\table-tree.blade.php</strong>:<pre><code class="has-line-data" data-line-start="4534" data-line-end="4591" class="language-php">&lt;div class="overflow-x-auto"&gt;
+<li class="has-line-data" data-line-start="4551" data-line-end="4610">Modificar la vista del componente <strong>resources\views\livewire\table-tree.blade.php</strong>:<pre><code class="has-line-data" data-line-start="4553" data-line-end="4610" class="language-php">&lt;div class="overflow-x-auto"&gt;
     &lt;div class="p-6 sm:px-20 bg-white border-b border-gray-200"&gt;
         ≡
     &lt;/div&gt;
@@ -4727,7 +4746,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 &lt;/div&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="4591" data-line-end="5066">Modificar la vista del componente <strong>resources\views\livewire\tree-view.blade.php</strong>:<pre><code class="has-line-data" data-line-start="4593" data-line-end="5066" class="language-php">@php
+<li class="has-line-data" data-line-start="4610" data-line-end="5085">Modificar la vista del componente <strong>resources\views\livewire\tree-view.blade.php</strong>:<pre><code class="has-line-data" data-line-start="4612" data-line-end="5085" class="language-php">@php
     $idPivote = $id;
 @endphp
 &lt;div&gt;
@@ -5201,8 +5220,8 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 &lt;/div&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="5066" data-line-end="5067">Añadir la traducción de <strong>file</strong> (documento) <strong>en resources\lang\es\validation.php</strong>.</li>
-<li class="has-line-data" data-line-start="5067" data-line-end="5079">Añadir ruta <strong>regresar</strong> en <strong>routes\web.php</strong>:<pre><code class="has-line-data" data-line-start="5069" data-line-end="5079" class="language-php"><span class="hljs-comment">// Grupo de rutas CRUD</span>
+<li class="has-line-data" data-line-start="5085" data-line-end="5086">Añadir la traducción de <strong>file</strong> (documento) <strong>en resources\lang\es\validation.php</strong>.</li>
+<li class="has-line-data" data-line-start="5086" data-line-end="5098">Añadir ruta <strong>regresar</strong> en <strong>routes\web.php</strong>:<pre><code class="has-line-data" data-line-start="5088" data-line-end="5098" class="language-php"><span class="hljs-comment">// Grupo de rutas CRUD</span>
 Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="hljs-string">'auth'</span>], <span class="hljs-string">'as'</span> =&gt; <span class="hljs-string">'crud.'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
     Route::resource(<span class="hljs-string">'trees'</span>, TreeController::class)-&gt;names(<span class="hljs-string">'trees'</span>)
         -&gt;middleware(<span class="hljs-string">'can:VerArboles'</span>);
@@ -5213,17 +5232,17 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 });
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="5079" data-line-end="5084">Crear commit:
+<li class="has-line-data" data-line-start="5098" data-line-end="5103">Crear commit:
 <ul>
-<li class="has-line-data" data-line-start="5080" data-line-end="5081">$ git add .</li>
-<li class="has-line-data" data-line-start="5081" data-line-end="5082">$ git commit -m “Agregar funcionalidad para la carga de enlaces y documentos”</li>
-<li class="has-line-data" data-line-start="5082" data-line-end="5084">$ git push -u origin main</li>
+<li class="has-line-data" data-line-start="5099" data-line-end="5100">$ git add .</li>
+<li class="has-line-data" data-line-start="5100" data-line-end="5101">$ git commit -m “Agregar funcionalidad para la carga de enlaces y documentos”</li>
+<li class="has-line-data" data-line-start="5101" data-line-end="5103">$ git push -u origin main</li>
 </ul>
 </li>
 </ol>
-<h2 class="code-line" data-line-start=5084 data-line-end=5085><a id="Detalles_finales_de_la_aplicacin_5084"></a>Detalles finales de la aplicación</h2>
+<h2 class="code-line" data-line-start=5103 data-line-end=5104><a id="Detalles_finales_de_la_aplicacin_5103"></a>Detalles finales de la aplicación</h2>
 <ol>
-<li class="has-line-data" data-line-start="5085" data-line-end="5101">Crear plantilla <strong>resources\views\layouts\partes\icono_web.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5087" data-line-end="5101" class="language-php">&lt;!-- Icono web --&gt;
+<li class="has-line-data" data-line-start="5104" data-line-end="5120">Crear plantilla <strong>resources\views\layouts\partes\icono_web.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5106" data-line-end="5120" class="language-php">&lt;!-- Icono web --&gt;
 &lt;meta property=<span class="hljs-string">"fb:app_id"</span> content=<span class="hljs-string">"APPID"</span>&gt;
 &lt;meta data-react-helmet=<span class="hljs-string">"true"</span> property=<span class="hljs-string">"og:url"</span> content=<span class="hljs-string">"{{ asset('/') }}"</span>/&gt;
 &lt;meta data-react-helmet=<span class="hljs-string">"true"</span> property=<span class="hljs-string">"og:type"</span> content=<span class="hljs-string">"website"</span>/&gt;
@@ -5238,13 +5257,13 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 &lt;meta data-react-helmet=<span class="hljs-string">"true"</span> name=<span class="hljs-string">"robots"</span> content=<span class="hljs-string">"noindex, nofollow"</span> /&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="5101" data-line-end="5108">Modificar plantilla <strong>resources\views\layouts\app.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5103" data-line-end="5108" class="language-php">≡
+<li class="has-line-data" data-line-start="5120" data-line-end="5127">Modificar plantilla <strong>resources\views\layouts\app.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5122" data-line-end="5127" class="language-php">≡
 &lt;title&gt;{{ config(<span class="hljs-string">'app.name'</span>, <span class="hljs-string">'App Árbol Genealógico'</span>) }}&lt;/title&gt;
 @<span class="hljs-keyword">include</span>(<span class="hljs-string">'layouts.partes.icono_web'</span>)
 ≡
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="5108" data-line-end="5154">Modificar menú de navegación <strong>resources\views\navigation-menu.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5110" data-line-end="5154" class="language-php">@php
+<li class="has-line-data" data-line-start="5127" data-line-end="5173">Modificar menú de navegación <strong>resources\views\navigation-menu.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5129" data-line-end="5173" class="language-php">@php
 <span class="hljs-variable">$nav_links</span> = [];
 <span class="hljs-keyword">if</span>(!Auth::guest()){
     <span class="hljs-variable">$nav_links</span> = [
@@ -5289,7 +5308,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 ≡
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="5154" data-line-end="5189">Modificar vista <strong>resources\views\dashboard.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5156" data-line-end="5189" class="language-php">@if (Auth::user()-&gt;hasPermissionTo('VerArboles'))
+<li class="has-line-data" data-line-start="5173" data-line-end="5208">Modificar vista <strong>resources\views\dashboard.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5175" data-line-end="5208" class="language-php">@if (Auth::user()-&gt;hasPermissionTo('VerArboles'))
     &lt;x-app-layout&gt;
         &lt;x-slot name="header"&gt;
             &lt;h2 class="font-semibold text-xl text-gray-800 leading-tight"&gt;
@@ -5323,7 +5342,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 @endif
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="5189" data-line-end="5269">Modificar vista <strong>resources\views\livewire\table-tree.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5191" data-line-end="5269" class="language-php">&lt;div class="overflow-x-auto"&gt;
+<li class="has-line-data" data-line-start="5208" data-line-end="5288">Modificar vista <strong>resources\views\livewire\table-tree.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5210" data-line-end="5288" class="language-php">&lt;div class="overflow-x-auto"&gt;
     &lt;div class="p-6 sm:px-20 bg-white border-b border-gray-200"&gt;
         &lt;div&gt;
             &lt;x-jet-application-logo class="block h-12 w-auto" /&gt;
@@ -5402,7 +5421,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 &lt;/div&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="5269" data-line-end="5337">Modificar vista <strong>resources\views\livewire\table-file.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5271" data-line-end="5337" class="language-php">&lt;div class="overflow-x-auto"&gt;
+<li class="has-line-data" data-line-start="5288" data-line-end="5356">Modificar vista <strong>resources\views\livewire\table-file.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5290" data-line-end="5356" class="language-php">&lt;div class="overflow-x-auto"&gt;
     ≡
 
     &lt;div class="min-w-screen {{-- min-h-screen --}} flex items-center justify-center bg-gray-100 font-sans overflow-hidden"&gt;
@@ -5469,7 +5488,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 &lt;/div&gt;  
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="5337" data-line-end="5822">Modificar vista <strong>resources\views\livewire\tree-view.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5339" data-line-end="5822" class="language-php">@php
+<li class="has-line-data" data-line-start="5356" data-line-end="5841">Modificar vista <strong>resources\views\livewire\tree-view.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5358" data-line-end="5841" class="language-php">@php
     $idPivote = $id;
 @endphp
 &lt;div&gt;
@@ -5953,7 +5972,7 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 &lt;/div&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="5822" data-line-end="5855">Modificar vista <strong>resources\views\admin\index.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5824" data-line-end="5855" class="language-php">@extends('adminlte::page')
+<li class="has-line-data" data-line-start="5841" data-line-end="5874">Modificar vista <strong>resources\views\admin\index.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5843" data-line-end="5874" class="language-php">@extends('adminlte::page')
 
 @section('title', 'Documentación de la aplicación | Soluciones++')
 
@@ -5985,11 +6004,200 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 @stop
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="5855" data-line-end="5859">Crear commit:
+<li class="has-line-data" data-line-start="5874" data-line-end="5879">Crear commit:
 <ul>
-<li class="has-line-data" data-line-start="5856" data-line-end="5857">$ git add .</li>
-<li class="has-line-data" data-line-start="5857" data-line-end="5858">$ git commit -m “Detalles finales de la aplicación”</li>
-<li class="has-line-data" data-line-start="5858" data-line-end="5859">$ git push -u origin main</li>
+<li class="has-line-data" data-line-start="5875" data-line-end="5876">$ git add .</li>
+<li class="has-line-data" data-line-start="5876" data-line-end="5877">$ git commit -m “Detalles finales de la aplicación”</li>
+<li class="has-line-data" data-line-start="5877" data-line-end="5879">$ git push -u origin main</li>
+</ul>
+</li>
+</ol>
+<h2 class="code-line" data-line-start=5879 data-line-end=5880><a id="Personalizacin_de_portada_y_rbol_inicial_5879"></a>Personalización de portada y árbol inicial</h2>
+<ol>
+<li class="has-line-data" data-line-start="5880" data-line-end="5899">Modificar el método <strong>up</strong> de la migración <strong>database\migrations\2014_10_12_000000_create_users_table.php</strong>:<pre><code class="has-line-data" data-line-start="5882" data-line-end="5899" class="language-php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">up</span><span class="hljs-params">()</span>
+</span>{
+    Schema::create(<span class="hljs-string">'users'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Blueprint <span class="hljs-variable">$table</span>)</span> </span>{
+        <span class="hljs-variable">$table</span>-&gt;id();
+        <span class="hljs-variable">$table</span>-&gt;string(<span class="hljs-string">'name'</span>);
+        <span class="hljs-variable">$table</span>-&gt;string(<span class="hljs-string">'email'</span>)-&gt;unique();
+        <span class="hljs-variable">$table</span>-&gt;timestamp(<span class="hljs-string">'email_verified_at'</span>)-&gt;nullable();
+        <span class="hljs-variable">$table</span>-&gt;string(<span class="hljs-string">'password'</span>);
+        <span class="hljs-variable">$table</span>-&gt;unsignedBigInteger(<span class="hljs-string">'default_tree_id'</span>)-&gt;nullable();
+        <span class="hljs-variable">$table</span>-&gt;string(<span class="hljs-string">'default_name_family'</span>)-&gt;nullable();
+        <span class="hljs-variable">$table</span>-&gt;rememberToken();
+        <span class="hljs-variable">$table</span>-&gt;foreignId(<span class="hljs-string">'current_team_id'</span>)-&gt;nullable();
+        <span class="hljs-variable">$table</span>-&gt;string(<span class="hljs-string">'profile_photo_path'</span>, <span class="hljs-number">2048</span>)-&gt;nullable();
+        <span class="hljs-variable">$table</span>-&gt;timestamps();
+    });
+}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="5899" data-line-end="5901">Reestablecer la base de datos y ejecutar los seeders:
+<ul>
+<li class="has-line-data" data-line-start="5900" data-line-end="5901">$ php artisan migrate:fresh --seed</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="5901" data-line-end="5911">Incluir los nuevo campos en la asignación masiva en el modelo <strong>app\Models\User.php</strong>:<pre><code class="has-line-data" data-line-start="5903" data-line-end="5911" class="language-php"><span class="hljs-keyword">protected</span> <span class="hljs-variable">$fillable</span> = [
+    <span class="hljs-string">'name'</span>,
+    <span class="hljs-string">'email'</span>,
+    <span class="hljs-string">'password'</span>,
+    <span class="hljs-string">'default_name_family'</span>,
+    <span class="hljs-string">'default_tree_id'</span>
+];
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="5911" data-line-end="5915">Crear ruta <strong>admin.customize</strong> en <strong>routes\admin.php</strong>:<pre><code class="has-line-data" data-line-start="5913" data-line-end="5915" class="language-php">Route::put(<span class="hljs-string">'customize/{user}'</span>, [UserController::class, <span class="hljs-string">'customize'</span>])-&gt;middleware(<span class="hljs-string">'can:Admin'</span>)-&gt;name(<span class="hljs-string">'customize'</span>);
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="5915" data-line-end="5922">Crear método customize en el controlador <strong>app\Http\Controllers\Admin\UserController.php</strong>:<pre><code class="has-line-data" data-line-start="5917" data-line-end="5922" class="language-php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">customize</span><span class="hljs-params">(Request <span class="hljs-variable">$request</span>, User <span class="hljs-variable">$user</span>)</span></span>{
+    <span class="hljs-variable">$user</span>-&gt;update(<span class="hljs-variable">$request</span>-&gt;all());
+    <span class="hljs-keyword">return</span> redirect()-&gt;route(<span class="hljs-string">'admin.users.edit'</span>, <span class="hljs-variable">$user</span>);
+}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="5922" data-line-end="5971">Modificar vista <strong>resources\views\admin\users\edit.blade.php</strong>:<pre><code class="has-line-data" data-line-start="5924" data-line-end="5971" class="language-php">@extends('adminlte::page')
+
+@section('title', 'Editar usuario | Soluciones++')
+
+@section('content_header')
+    &lt;h1&gt;Editar usuario&lt;/h1&gt;
+@stop
+
+@section('content')
+    &lt;div class="card"&gt;
+        &lt;div class="card-body"&gt;
+            &lt;h2 class="h5"&gt;Nombre:&lt;/h2&gt;
+            &lt;p class="form-control"&gt;{{ $user-&gt;name }}&lt;/p&gt;
+            &lt;h2 class="h5"&gt;Lista de roles&lt;/h2&gt;
+            {!! Form::model($user, ['route' =&gt; ['admin.users.update', $user], 'method' =&gt; 'put']) !!}
+                @foreach ($roles as $role)
+                    &lt;div&gt;
+                        &lt;label&gt;
+                            {!! Form::checkbox('roles[]', $role-&gt;id, null, ['class' =&gt; 'mr-1']) !!}
+                            {{ $role-&gt;name }}
+                        &lt;/label&gt;
+                    &lt;/div&gt;
+                @endforeach
+                {!! Form::submit('Asignar rol', ['class' =&gt; 'btn btn-primary mt-2']) !!}
+            {!! Form::close() !!}
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="card"&gt;
+        &lt;div class="card-body"&gt;
+            &lt;h2 class="h5"&gt;Personalizar aplicación:&lt;/h2&gt;
+            {!! Form::model($user, ['route' =&gt; ['admin.customize', $user], 'method' =&gt; 'put']) !!}
+                {!! Form::label('default_name_family', 'Nombre del árbol genealógico: ') !!}
+                {!! Form::text('default_name_family', null, ['class' =&gt; 'form-control' . ($errors-&gt;has('default_name_family') ? ' is-invalid' :  ''), 'placeholder' =&gt; 'Escriba el apellido principal para la aplicación']) !!}
+                {!! Form::label('default_tree_id', 'Id por defecto: ') !!}
+                {!! Form::number('default_tree_id', null, ['class' =&gt; 'form-control' . ($errors-&gt;has('default_tree_id') ? ' is-invalid' :  ''), 'placeholder' =&gt; 'Indique el id por defecto para la vista del árbol']) !!}
+                {!! Form::submit('Personalizar', ['class' =&gt; 'btn btn-primary mt-2']) !!}
+            {!! Form::close() !!}
+        &lt;/div&gt;
+    &lt;/div&gt;
+@stop
+
+@section('css')
+@stop
+
+@section('js')
+@stop
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="5971" data-line-end="6027">Modificar helper <strong>app\helper\tree.php</strong>:<pre><code class="has-line-data" data-line-start="5973" data-line-end="6027" class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">File</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">Tree</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">User</span>;
+
+<span class="hljs-comment">/* * * * * ÁRBOL  * * * * */</span>
+≡
+<span class="hljs-comment">/* * * * * OTRAS FUNCIONES  * * * * */</span>
+
+<span class="hljs-comment">// Verificar si una persona tiene documentos</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">TieneDocumentos</span><span class="hljs-params">(<span class="hljs-variable">$id</span>)</span></span>{
+    <span class="hljs-variable">$documentos</span> = File::where(<span class="hljs-string">'tree_id'</span>, <span class="hljs-string">'LIKE'</span>, <span class="hljs-variable">$id</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$documentos</span>-&gt;count() ? <span class="hljs-keyword">true</span> : <span class="hljs-keyword">false</span>;
+}
+
+<span class="hljs-comment">// Obtener apellido principal de la aplicación</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">GetApellidoPrincipal</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">try</span>{
+        <span class="hljs-variable">$nombre</span> = <span class="hljs-keyword">null</span>;
+
+        <span class="hljs-keyword">if</span> (Auth()-&gt;user()-&gt;default_name_family){
+            <span class="hljs-variable">$nombre</span> = Auth()-&gt;user()-&gt;default_name_family;
+        }<span class="hljs-keyword">else</span>{
+            <span class="hljs-keyword">if</span>(User::find(<span class="hljs-number">1</span>)-&gt;default_name_family){
+                <span class="hljs-variable">$nombre</span> = User::find(<span class="hljs-number">1</span>)-&gt;default_name_family;
+            }<span class="hljs-keyword">else</span>{
+                <span class="hljs-variable">$nombre</span> = <span class="hljs-string">'familiar'</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'Árbol genealógico '</span> . <span class="hljs-variable">$nombre</span>;
+    }<span class="hljs-keyword">catch</span>(<span class="hljs-keyword">Exception</span> <span class="hljs-variable">$e</span>){
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'Árbol genealógico familiar'</span>;
+    }
+}
+
+<span class="hljs-comment">// Obtener persona por defecto</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">GetDefaultPerson</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">try</span>{
+        <span class="hljs-variable">$tree_id</span> = <span class="hljs-number">1</span>;
+
+        <span class="hljs-keyword">if</span> (Auth()-&gt;user()-&gt;default_tree_id){
+            <span class="hljs-variable">$tree_id</span> = Auth()-&gt;user()-&gt;default_tree_id;
+        }<span class="hljs-keyword">else</span>{
+            <span class="hljs-keyword">if</span>(User::find(<span class="hljs-number">1</span>)-&gt;default_tree_id){
+                <span class="hljs-variable">$tree_id</span> = User::find(<span class="hljs-number">1</span>)-&gt;default_tree_id;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$tree_id</span>;
+    }<span class="hljs-keyword">catch</span>(<span class="hljs-keyword">Exception</span> <span class="hljs-variable">$e</span>){
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    }  
+}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="6027" data-line-end="6037">Modificar vista <strong>resources\views\welcome.blade.php</strong>:<pre><code class="has-line-data" data-line-start="6029" data-line-end="6037" class="language-php">≡
+&lt;div class="w-full md:w-3/4 lg:w-1/2"&gt;
+    &lt;h1 class="text-white font-bold text-4xl"&gt;{{ GetApellidoPrincipal() }}&lt;/h1&gt;
+    &lt;p class="text-gray-300 mt-4"&gt;&lt;strong&gt;Desarrollado por Soluciones++&lt;/strong&gt;&lt;/p&gt;
+    &lt;p class="text-gray-300" &gt;en donde un clic menos (-) importa!!!&lt;/p&gt;
+&lt;/div&gt;
+≡
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="6037" data-line-end="6064">Modificar el navegador <strong>resources\views\navigation-menu.blade.php</strong>:<pre><code class="has-line-data" data-line-start="6039" data-line-end="6064" class="language-php">@php
+<span class="hljs-variable">$nav_links</span> = [];
+<span class="hljs-keyword">if</span>(!Auth::guest()){
+    <span class="hljs-variable">$nav_links</span> = [
+        ≡
+    ];
+
+    <span class="hljs-keyword">if</span>(Auth::user()-&gt;hasPermissionTo(<span class="hljs-string">'VerArboles'</span>)){
+        array_push(<span class="hljs-variable">$nav_links</span>,
+            [
+                <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Árbol'</span>,
+                <span class="hljs-string">'route'</span> =&gt; route(<span class="hljs-string">'dashboard'</span>, GetDefaultPerson()),
+                <span class="hljs-string">'active'</span> =&gt; request()-&gt;routeIs(<span class="hljs-string">'dashboard'</span>)
+            ],
+            ≡
+        );
+    }
+
+    <span class="hljs-keyword">if</span>(Auth::user()-&gt;hasRole(<span class="hljs-string">'Admin'</span>)){
+        ≡
+    }
+}
+@endphp
+≡
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="6064" data-line-end="6068">Crear commit:
+<ul>
+<li class="has-line-data" data-line-start="6065" data-line-end="6066">$ git add .</li>
+<li class="has-line-data" data-line-start="6066" data-line-end="6067">$ git commit -m “Personalización de portada y árbol inicial”</li>
+<li class="has-line-data" data-line-start="6067" data-line-end="6068">$ git push -u origin main</li>
 </ul>
 </li>
 </ol>
@@ -5997,308 +6205,308 @@ Route::group([<span class="hljs-string">'middleware'</span> =&gt; [<span class="
 ```php
 ```
 </code></pre>
-<h2 class="code-line" data-line-start=5868 data-line-end=5869><a id="Comandos_Git_5868"></a>Comandos Git:</h2>
+<h2 class="code-line" data-line-start=6077 data-line-end=6078><a id="Comandos_Git_6077"></a>Comandos Git:</h2>
 <ul>
-<li class="has-line-data" data-line-start="5869" data-line-end="5871">Historial de commit:
+<li class="has-line-data" data-line-start="6078" data-line-end="6080">Historial de commit:
 <ul>
-<li class="has-line-data" data-line-start="5870" data-line-end="5871">git log --pretty=oneline</li>
+<li class="has-line-data" data-line-start="6079" data-line-end="6080">git log --pretty=oneline</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5871" data-line-end="5873">Borrar ultimo commit:
+<li class="has-line-data" data-line-start="6080" data-line-end="6082">Borrar ultimo commit:
 <ul>
-<li class="has-line-data" data-line-start="5872" data-line-end="5873">git reset HEAD^ --soft</li>
+<li class="has-line-data" data-line-start="6081" data-line-end="6082">git reset HEAD^ --soft</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5873" data-line-end="5875">Forzar push
+<li class="has-line-data" data-line-start="6082" data-line-end="6084">Forzar push
 <ul>
-<li class="has-line-data" data-line-start="5874" data-line-end="5875">git push origin -f</li>
+<li class="has-line-data" data-line-start="6083" data-line-end="6084">git push origin -f</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5875" data-line-end="5878">Seleccionar el commit al cual queremos regresar:
+<li class="has-line-data" data-line-start="6084" data-line-end="6087">Seleccionar el commit al cual queremos regresar:
 <ul>
-<li class="has-line-data" data-line-start="5876" data-line-end="5878">$ git reset --hard &lt;commit-id&gt;</li>
+<li class="has-line-data" data-line-start="6085" data-line-end="6087">$ git reset --hard &lt;commit-id&gt;</li>
 </ul>
 </li>
 </ul>
-<h2 class="code-line" data-line-start=5878 data-line-end=5879><a id="Para_limpiar_configuracin_y_reestablecer_el_cache_5878"></a>Para limpiar configuración y reestablecer el cache:</h2>
+<h2 class="code-line" data-line-start=6087 data-line-end=6088><a id="Para_limpiar_configuracin_y_reestablecer_el_cache_6087"></a>Para limpiar configuración y reestablecer el cache:</h2>
 <ul>
-<li class="has-line-data" data-line-start="5879" data-line-end="5880">$ php artisan config:clear</li>
-<li class="has-line-data" data-line-start="5880" data-line-end="5882">$ php artisan config:cache</li>
+<li class="has-line-data" data-line-start="6088" data-line-end="6089">$ php artisan config:clear</li>
+<li class="has-line-data" data-line-start="6089" data-line-end="6091">$ php artisan config:cache</li>
 </ul>
-<h2 class="code-line" data-line-start=5882 data-line-end=5883><a id="Deploy_del_proyecto_en_Heroku_5882"></a>Deploy del proyecto en Heroku</h2>
+<h2 class="code-line" data-line-start=6091 data-line-end=6092><a id="Deploy_del_proyecto_en_Heroku_6091"></a>Deploy del proyecto en Heroku</h2>
 <ol>
-<li class="has-line-data" data-line-start="5883" data-line-end="5887">Crear en la raíz del proyecto el archivo <strong>Procfile</strong> (sin extensión) para elegir un servidor apache en Heroku y también indicarle la ubicación del archivo incial index.php:<pre><code class="has-line-data" data-line-start="5885" data-line-end="5887">web: vendor/bin/heroku-php-apache2 public/
+<li class="has-line-data" data-line-start="6092" data-line-end="6096">Crear en la raíz del proyecto el archivo <strong>Procfile</strong> (sin extensión) para elegir un servidor apache en Heroku y también indicarle la ubicación del archivo incial index.php:<pre><code class="has-line-data" data-line-start="6094" data-line-end="6096">web: vendor/bin/heroku-php-apache2 public/
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="5887" data-line-end="5891">Crear commit <strong>Procfile</strong>:
+<li class="has-line-data" data-line-start="6096" data-line-end="6100">Crear commit <strong>Procfile</strong>:
 <ul>
-<li class="has-line-data" data-line-start="5888" data-line-end="5889">$ git add .</li>
-<li class="has-line-data" data-line-start="5889" data-line-end="5890">$ git commit -m “Adición del archivo Procfile”</li>
-<li class="has-line-data" data-line-start="5890" data-line-end="5891">$ git push -u origin main</li>
+<li class="has-line-data" data-line-start="6097" data-line-end="6098">$ git add .</li>
+<li class="has-line-data" data-line-start="6098" data-line-end="6099">$ git commit -m “Adición del archivo Procfile”</li>
+<li class="has-line-data" data-line-start="6099" data-line-end="6100">$ git push -u origin main</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5891" data-line-end="5892">Ingresar a <a href="https://dashboard.heroku.com/apps">Heroku</a> e ir a <strong>Dashboard</strong>.</li>
-<li class="has-line-data" data-line-start="5892" data-line-end="5894">Crear un nuevo proyecto en <strong>New &gt; Create new app</strong>
+<li class="has-line-data" data-line-start="6100" data-line-end="6101">Ingresar a <a href="https://dashboard.heroku.com/apps">Heroku</a> e ir a <strong>Dashboard</strong>.</li>
+<li class="has-line-data" data-line-start="6101" data-line-end="6103">Crear un nuevo proyecto en <strong>New &gt; Create new app</strong>
 <ul>
-<li class="has-line-data" data-line-start="5893" data-line-end="5894">Nombre: <strong>app-arbol-2021</strong></li>
+<li class="has-line-data" data-line-start="6102" data-line-end="6103">Nombre: <strong>app-arbol-2021</strong></li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5894" data-line-end="5895">Ir a Deploy y dar clic en GitHub.</li>
-<li class="has-line-data" data-line-start="5895" data-line-end="5896">Clic en el botón Connect to GitHub e ingresar las credenciales.</li>
-<li class="has-line-data" data-line-start="5896" data-line-end="5897">Seleccionar el repositorio <strong>2021app_arbolgen</strong> y presionar el botón <strong>Connect</strong>.</li>
-<li class="has-line-data" data-line-start="5897" data-line-end="5898">Para tener siempre la ultima actualización de nuestro proyecto se recomienda presionar el botón <strong>Enable Automatic Deploys</strong>.</li>
-<li class="has-line-data" data-line-start="5898" data-line-end="5899">Presionar el botón <strong>Deploy Branch</strong>.</li>
-<li class="has-line-data" data-line-start="5899" data-line-end="5900">Descargar e instalar <a href="https://devcenter.heroku.com/articles/heroku-cli">Heroku CLI</a>.</li>
-<li class="has-line-data" data-line-start="5900" data-line-end="5902">En la terminal en la raíz del proyecto en local e iniciar sesión en Heroku:
+<li class="has-line-data" data-line-start="6103" data-line-end="6104">Ir a Deploy y dar clic en GitHub.</li>
+<li class="has-line-data" data-line-start="6104" data-line-end="6105">Clic en el botón Connect to GitHub e ingresar las credenciales.</li>
+<li class="has-line-data" data-line-start="6105" data-line-end="6106">Seleccionar el repositorio <strong>2021app_arbolgen</strong> y presionar el botón <strong>Connect</strong>.</li>
+<li class="has-line-data" data-line-start="6106" data-line-end="6107">Para tener siempre la ultima actualización de nuestro proyecto se recomienda presionar el botón <strong>Enable Automatic Deploys</strong>.</li>
+<li class="has-line-data" data-line-start="6107" data-line-end="6108">Presionar el botón <strong>Deploy Branch</strong>.</li>
+<li class="has-line-data" data-line-start="6108" data-line-end="6109">Descargar e instalar <a href="https://devcenter.heroku.com/articles/heroku-cli">Heroku CLI</a>.</li>
+<li class="has-line-data" data-line-start="6109" data-line-end="6111">En la terminal en la raíz del proyecto en local e iniciar sesión en Heroku:
 <ul>
-<li class="has-line-data" data-line-start="5901" data-line-end="5902">$ heroku login</li>
+<li class="has-line-data" data-line-start="6110" data-line-end="6111">$ heroku login</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5902" data-line-end="5906">Víncular con la aplicación de Heroku <strong>app-arbol-2021</strong>:
+<li class="has-line-data" data-line-start="6111" data-line-end="6115">Víncular con la aplicación de Heroku <strong>app-arbol-2021</strong>:
 <ul>
-<li class="has-line-data" data-line-start="5903" data-line-end="5905">$ git remote add heroku <a href="https://git.heroku.com/app-arbol-2021.git">git.heroku.com/app-arbol-2021.git</a>
+<li class="has-line-data" data-line-start="6112" data-line-end="6114">$ git remote add heroku <a href="https://git.heroku.com/app-arbol-2021.git">git.heroku.com/app-arbol-2021.git</a>
 <ul>
-<li class="has-line-data" data-line-start="5904" data-line-end="5905">(git remote set-url Origin <a href="https://git.heroku.com/app-arbol-2021.git">git.heroku.com/app-arbol-2021.git</a>)</li>
+<li class="has-line-data" data-line-start="6113" data-line-end="6114">(git remote set-url Origin <a href="https://git.heroku.com/app-arbol-2021.git">git.heroku.com/app-arbol-2021.git</a>)</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5905" data-line-end="5906">$ heroku git:remote -a app-arbol-2021</li>
+<li class="has-line-data" data-line-start="6114" data-line-end="6115">$ heroku git:remote -a app-arbol-2021</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5906" data-line-end="5914">Registrar variables de entorno de la aplicación desde la terminal:
+<li class="has-line-data" data-line-start="6115" data-line-end="6123">Registrar variables de entorno de la aplicación desde la terminal:
 <ul>
-<li class="has-line-data" data-line-start="5907" data-line-end="5908">$ heroku config:add APP_NAME=“App Árbol Genealógico”</li>
-<li class="has-line-data" data-line-start="5908" data-line-end="5909">$ heroku config:add APP_ENV=production</li>
-<li class="has-line-data" data-line-start="5909" data-line-end="5910">$ heroku config:add APP_KEY=base64:UADlTwlxlcIB+RPewQt5xYMNPjOyuFuT+qSY9T3olUk=</li>
-<li class="has-line-data" data-line-start="5910" data-line-end="5911">$ heroku config:add APP_DEBUG=false</li>
-<li class="has-line-data" data-line-start="5911" data-line-end="5913">$ heroku config:add APP_URL=https://app-arbol-2021.herokuapp.com
+<li class="has-line-data" data-line-start="6116" data-line-end="6117">$ heroku config:add APP_NAME=“App Árbol Genealógico”</li>
+<li class="has-line-data" data-line-start="6117" data-line-end="6118">$ heroku config:add APP_ENV=production</li>
+<li class="has-line-data" data-line-start="6118" data-line-end="6119">$ heroku config:add APP_KEY=base64:UADlTwlxlcIB+RPewQt5xYMNPjOyuFuT+qSY9T3olUk=</li>
+<li class="has-line-data" data-line-start="6119" data-line-end="6120">$ heroku config:add APP_DEBUG=false</li>
+<li class="has-line-data" data-line-start="6120" data-line-end="6122">$ heroku config:add APP_URL=https://app-arbol-2021.herokuapp.com
 <ul>
-<li class="has-line-data" data-line-start="5912" data-line-end="5913"><a href="http://app-arbol-2021.herokuapp.com">http://app-arbol-2021.herokuapp.com</a></li>
+<li class="has-line-data" data-line-start="6121" data-line-end="6122"><a href="http://app-arbol-2021.herokuapp.com">http://app-arbol-2021.herokuapp.com</a></li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5913" data-line-end="5914">$ heroku config:add FILESYSTEM_DRIVER=public</li>
+<li class="has-line-data" data-line-start="6122" data-line-end="6123">$ heroku config:add FILESYSTEM_DRIVER=public</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5914" data-line-end="5925">Crear base de datos Postgre SQL desde la terminal:
+<li class="has-line-data" data-line-start="6123" data-line-end="6134">Crear base de datos Postgre SQL desde la terminal:
 <ul>
-<li class="has-line-data" data-line-start="5915" data-line-end="5916">$ heroku addons:create heroku-postgresql:hobby-dev</li>
-<li class="has-line-data" data-line-start="5916" data-line-end="5917">$ heroku pg:credentials:url</li>
-<li class="has-line-data" data-line-start="5917" data-line-end="5918"><strong>Nota</strong>: la salida de la última línea de comando nos servirá para configurar las variables de entorno de la base de datos:</li>
+<li class="has-line-data" data-line-start="6124" data-line-end="6125">$ heroku addons:create heroku-postgresql:hobby-dev</li>
+<li class="has-line-data" data-line-start="6125" data-line-end="6126">$ heroku pg:credentials:url</li>
+<li class="has-line-data" data-line-start="6126" data-line-end="6127"><strong>Nota</strong>: la salida de la última línea de comando nos servirá para configurar las variables de entorno de la base de datos:</li>
 </ul>
-<pre><code class="has-line-data" data-line-start="5919" data-line-end="5925">Connection information for default credential.
+<pre><code class="has-line-data" data-line-start="6128" data-line-end="6134">Connection information for default credential.
 Connection info string:
 &quot;dbname=*** host=*** port=*** user=*** password=*** sslmode=require&quot;
 Connection URL:
-postgres://mmtmzssdyxkfyt:9<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="231010151115104614131741131547134212414214401a141a401711154614471b4641141445101a161b46171212174046421a4211121a14104142131b471b1763">[email&#160;protected]</a>ec2-35-168-145-180.compute-1.amazonaws.com:5432/dbhkpp3vfen6vd
+postgres://mmtmzssdyxkfyt:9<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="88bbbbbebabebbedbfb8bceab8beecb8e9b9eae9bfebb1bfb1ebbcbabeedbfecb0edeabfbfeebbb1bdb0edbcb9b9bcebede9b1e9bab9b1bfbbeae9b8b0ecb0bcc8">[email&#160;protected]</a>ec2-35-168-145-180.compute-1.amazonaws.com:5432/dbhkpp3vfen6vd
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="5925" data-line-end="5932">Registrar variables de entorno de la base de datos desde la terminal:
+<li class="has-line-data" data-line-start="6134" data-line-end="6141">Registrar variables de entorno de la base de datos desde la terminal:
 <ul>
-<li class="has-line-data" data-line-start="5926" data-line-end="5927">$ heroku config:add DB_CONNECTION=pgsql</li>
-<li class="has-line-data" data-line-start="5927" data-line-end="5928">$ heroku config:add DB_HOST=<a href="http://ec2-18-235-4-83.compute-1.amazonaws.com">ec2-18-235-4-83.compute-1.amazonaws.com</a></li>
-<li class="has-line-data" data-line-start="5928" data-line-end="5929">$ heroku config:add DB_PORT=5432</li>
-<li class="has-line-data" data-line-start="5929" data-line-end="5930">$ heroku config:add DB_DATABASE=db6unq9m90dvkv</li>
-<li class="has-line-data" data-line-start="5930" data-line-end="5931">$ heroku config:add DB_USERNAME=vcsyvufmsdpbhn</li>
-<li class="has-line-data" data-line-start="5931" data-line-end="5932">$ heroku config:add DB_PASSWORD=******</li>
+<li class="has-line-data" data-line-start="6135" data-line-end="6136">$ heroku config:add DB_CONNECTION=pgsql</li>
+<li class="has-line-data" data-line-start="6136" data-line-end="6137">$ heroku config:add DB_HOST=<a href="http://ec2-18-235-4-83.compute-1.amazonaws.com">ec2-18-235-4-83.compute-1.amazonaws.com</a></li>
+<li class="has-line-data" data-line-start="6137" data-line-end="6138">$ heroku config:add DB_PORT=5432</li>
+<li class="has-line-data" data-line-start="6138" data-line-end="6139">$ heroku config:add DB_DATABASE=db6unq9m90dvkv</li>
+<li class="has-line-data" data-line-start="6139" data-line-end="6140">$ heroku config:add DB_USERNAME=vcsyvufmsdpbhn</li>
+<li class="has-line-data" data-line-start="6140" data-line-end="6141">$ heroku config:add DB_PASSWORD=******</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5932" data-line-end="5938">Ejecutar migraciones:
+<li class="has-line-data" data-line-start="6141" data-line-end="6147">Ejecutar migraciones:
 <ul>
-<li class="has-line-data" data-line-start="5933" data-line-end="5935">$ heroku run bash<br>
+<li class="has-line-data" data-line-start="6142" data-line-end="6144">$ heroku run bash<br>
 &lt;!-- + ~ $ php artisan storage:link --&gt;</li>
-<li class="has-line-data" data-line-start="5935" data-line-end="5937">~ $ php artisan migrate:fresh --seed
+<li class="has-line-data" data-line-start="6144" data-line-end="6146">~ $ php artisan migrate:fresh --seed
 <ul>
-<li class="has-line-data" data-line-start="5936" data-line-end="5937">Do you really wish to run this command? (yes/no) [no]: <strong>yes</strong></li>
+<li class="has-line-data" data-line-start="6145" data-line-end="6146">Do you really wish to run this command? (yes/no) [no]: <strong>yes</strong></li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5937" data-line-end="5938">~ $ exit</li>
+<li class="has-line-data" data-line-start="6146" data-line-end="6147">~ $ exit</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5938" data-line-end="5940">Salir de Heroku:
+<li class="has-line-data" data-line-start="6147" data-line-end="6149">Salir de Heroku:
 <ul>
-<li class="has-line-data" data-line-start="5939" data-line-end="5940">$ heroku logout</li>
+<li class="has-line-data" data-line-start="6148" data-line-end="6149">$ heroku logout</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5940" data-line-end="5942">Desconectar con repositorio Heroku:
+<li class="has-line-data" data-line-start="6149" data-line-end="6151">Desconectar con repositorio Heroku:
 <ul>
-<li class="has-line-data" data-line-start="5941" data-line-end="5942">$ git remote rm heroku</li>
+<li class="has-line-data" data-line-start="6150" data-line-end="6151">$ git remote rm heroku</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5942" data-line-end="5944">Realizar la siguiente petición http: <a href="https://app-arbol-2021.herokuapp.com/storage-link">http://app-arbol-2021.herokuapp.com/storage-link</a></li>
+<li class="has-line-data" data-line-start="6151" data-line-end="6153">Realizar la siguiente petición http: <a href="https://app-arbol-2021.herokuapp.com/storage-link">http://app-arbol-2021.herokuapp.com/storage-link</a></li>
 </ol>
-<h3 class="code-line" data-line-start=5944 data-line-end=5945><a id="Para_reestablecer_base_de_datos_y_correr_seeders_en_Heroku_5944"></a>Para reestablecer base de datos y correr seeders en Heroku</h3>
+<h3 class="code-line" data-line-start=6153 data-line-end=6154><a id="Para_reestablecer_base_de_datos_y_correr_seeders_en_Heroku_6153"></a>Para reestablecer base de datos y correr seeders en Heroku</h3>
 <ul>
-<li class="has-line-data" data-line-start="5945" data-line-end="5946">$ heroku login</li>
-<li class="has-line-data" data-line-start="5946" data-line-end="5947">$ heroku run bash</li>
-<li class="has-line-data" data-line-start="5947" data-line-end="5948">~ $ composer update</li>
-<li class="has-line-data" data-line-start="5948" data-line-end="5953">~ $ php artisan migrate:fresh --seed
+<li class="has-line-data" data-line-start="6154" data-line-end="6155">$ heroku login</li>
+<li class="has-line-data" data-line-start="6155" data-line-end="6156">$ heroku run bash</li>
+<li class="has-line-data" data-line-start="6156" data-line-end="6157">~ $ composer update</li>
+<li class="has-line-data" data-line-start="6157" data-line-end="6162">~ $ php artisan migrate:fresh --seed
 <ul>
-<li class="has-line-data" data-line-start="5949" data-line-end="5953"><strong>Nota</strong>: en caso de problemas:
+<li class="has-line-data" data-line-start="6158" data-line-end="6162"><strong>Nota</strong>: en caso de problemas:
 <ul>
-<li class="has-line-data" data-line-start="5950" data-line-end="5951">~ $ php artisan migrate:fresh</li>
-<li class="has-line-data" data-line-start="5951" data-line-end="5953">~ $ php artisan db:seed</li>
+<li class="has-line-data" data-line-start="6159" data-line-end="6160">~ $ php artisan migrate:fresh</li>
+<li class="has-line-data" data-line-start="6160" data-line-end="6162">~ $ php artisan db:seed</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-<h2 class="code-line" data-line-start=5953 data-line-end=5954><a id="Crear_base_de_datos_en_el_hosting_5953"></a>Crear base de datos en el hosting</h2>
+<h2 class="code-line" data-line-start=6162 data-line-end=6163><a id="Crear_base_de_datos_en_el_hosting_6162"></a>Crear base de datos en el hosting</h2>
 <ol>
-<li class="has-line-data" data-line-start="5954" data-line-end="5956">Ingresar al cPanel:
+<li class="has-line-data" data-line-start="6163" data-line-end="6165">Ingresar al cPanel:
 <ul>
-<li class="has-line-data" data-line-start="5955" data-line-end="5956"><a href="https://ndembae.com/cpanel">https://ndembae.com/cpanel</a></li>
+<li class="has-line-data" data-line-start="6164" data-line-end="6165"><a href="https://ndembae.com/cpanel">https://ndembae.com/cpanel</a></li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5956" data-line-end="5957">Ir a sección <strong>Bases de datos/Bases de datos de MySQL®</strong> .</li>
-<li class="has-line-data" data-line-start="5957" data-line-end="5958">Crear base de datos con el nombre <strong>ndembae_apparbolgen</strong>.</li>
-<li class="has-line-data" data-line-start="5958" data-line-end="5959">Exportar la estructura base de datos del proyecto en la máquina local.</li>
-<li class="has-line-data" data-line-start="5959" data-line-end="5961">Importar la estructura base de datos del proyecto al hosting.</li>
+<li class="has-line-data" data-line-start="6165" data-line-end="6166">Ir a sección <strong>Bases de datos/Bases de datos de MySQL®</strong> .</li>
+<li class="has-line-data" data-line-start="6166" data-line-end="6167">Crear base de datos con el nombre <strong>ndembae_apparbolgen</strong>.</li>
+<li class="has-line-data" data-line-start="6167" data-line-end="6168">Exportar la estructura base de datos del proyecto en la máquina local.</li>
+<li class="has-line-data" data-line-start="6168" data-line-end="6170">Importar la estructura base de datos del proyecto al hosting.</li>
 </ol>
-<h2 class="code-line" data-line-start=5961 data-line-end=5962><a id="Deploy_en_el_hosting_de_cPanel_5961"></a>Deploy en el hosting de cPanel</h2>
+<h2 class="code-line" data-line-start=6170 data-line-end=6171><a id="Deploy_en_el_hosting_de_cPanel_6170"></a>Deploy en el hosting de cPanel</h2>
 <ol>
-<li class="has-line-data" data-line-start="5962" data-line-end="5964">Ingresar el cPanel:
+<li class="has-line-data" data-line-start="6171" data-line-end="6173">Ingresar el cPanel:
 <ul>
-<li class="has-line-data" data-line-start="5963" data-line-end="5964"><a href="https://ndembae.com:2083/logout/?locale=es_419">https://ndembae.com:2083/logout/?locale=es_419</a></li>
+<li class="has-line-data" data-line-start="6172" data-line-end="6173"><a href="https://ndembae.com:2083/logout/?locale=es_419">https://ndembae.com:2083/logout/?locale=es_419</a></li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5964" data-line-end="5965">Ir a <strong>Archivos &gt; Administrador de archivos</strong>.</li>
-<li class="has-line-data" data-line-start="5965" data-line-end="5966">Crear directorio <strong>public_html/tree</strong>.</li>
-<li class="has-line-data" data-line-start="5966" data-line-end="5967">Regresar al <strong>home</strong> del cPanel e ir a <strong>Archivos &gt; Git™ Version Control</strong>.</li>
-<li class="has-line-data" data-line-start="5967" data-line-end="5971">Presionar el botón <strong>Crear</strong> y completar el formulario:
+<li class="has-line-data" data-line-start="6173" data-line-end="6174">Ir a <strong>Archivos &gt; Administrador de archivos</strong>.</li>
+<li class="has-line-data" data-line-start="6174" data-line-end="6175">Crear directorio <strong>public_html/tree</strong>.</li>
+<li class="has-line-data" data-line-start="6175" data-line-end="6176">Regresar al <strong>home</strong> del cPanel e ir a <strong>Archivos &gt; Git™ Version Control</strong>.</li>
+<li class="has-line-data" data-line-start="6176" data-line-end="6180">Presionar el botón <strong>Crear</strong> y completar el formulario:
 <ul>
-<li class="has-line-data" data-line-start="5968" data-line-end="5969">Clone URL: <a href="https://github.com/petrix12/2021app_arbolgen">https://github.com/petrix12/2021app_arbolgen</a></li>
-<li class="has-line-data" data-line-start="5969" data-line-end="5970">Repository Path: public_html/tree</li>
-<li class="has-line-data" data-line-start="5970" data-line-end="5971">Presionar el botón <strong>Crear</strong>.</li>
+<li class="has-line-data" data-line-start="6177" data-line-end="6178">Clone URL: <a href="https://github.com/petrix12/2021app_arbolgen">https://github.com/petrix12/2021app_arbolgen</a></li>
+<li class="has-line-data" data-line-start="6178" data-line-end="6179">Repository Path: public_html/tree</li>
+<li class="has-line-data" data-line-start="6179" data-line-end="6180">Presionar el botón <strong>Crear</strong>.</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5971" data-line-end="5975">Regresar al <strong>home</strong> del cPanel e ir a <strong>Dominios &gt; Redirige</strong> y completar el formulario:
+<li class="has-line-data" data-line-start="6180" data-line-end="6184">Regresar al <strong>home</strong> del cPanel e ir a <strong>Dominios &gt; Redirige</strong> y completar el formulario:
 <ul>
-<li class="has-line-data" data-line-start="5972" data-line-end="5973">Tipo: Permanente (301)</li>
-<li class="has-line-data" data-line-start="5973" data-line-end="5974">https?://(www.)?: <a href="http://ndembae.com">ndembae.com</a></li>
-<li class="has-line-data" data-line-start="5974" data-line-end="5975">Redirige a: <a href="http://tree.ndembae.com">http://tree.ndembae.com</a></li>
+<li class="has-line-data" data-line-start="6181" data-line-end="6182">Tipo: Permanente (301)</li>
+<li class="has-line-data" data-line-start="6182" data-line-end="6183">https?://(www.)?: <a href="http://ndembae.com">ndembae.com</a></li>
+<li class="has-line-data" data-line-start="6183" data-line-end="6184">Redirige a: <a href="http://tree.ndembae.com">http://tree.ndembae.com</a></li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5975" data-line-end="5980">Subir los siguientes archivos y directorios en local al hosting en el directorio <strong>public_html/tree</strong>:
+<li class="has-line-data" data-line-start="6184" data-line-end="6189">Subir los siguientes archivos y directorios en local al hosting en el directorio <strong>public_html/tree</strong>:
 <ul>
-<li class="has-line-data" data-line-start="5976" data-line-end="5977">node_modules [directorio]</li>
-<li class="has-line-data" data-line-start="5977" data-line-end="5978">vendor [directorio]</li>
-<li class="has-line-data" data-line-start="5978" data-line-end="5980">.env [archivo]</li>
+<li class="has-line-data" data-line-start="6185" data-line-end="6186">node_modules [directorio]</li>
+<li class="has-line-data" data-line-start="6186" data-line-end="6187">vendor [directorio]</li>
+<li class="has-line-data" data-line-start="6187" data-line-end="6189">.env [archivo]</li>
 </ul>
 </li>
 </ol>
-<h2 class="code-line" data-line-start=5980 data-line-end=5981><a id="Configurar_GitHub_con_el_hosting_5980"></a>Configurar GitHub con el hosting</h2>
+<h2 class="code-line" data-line-start=6189 data-line-end=6190><a id="Configurar_GitHub_con_el_hosting_6189"></a>Configurar GitHub con el hosting</h2>
 <ol>
-<li class="has-line-data" data-line-start="5981" data-line-end="5982">Ingresar a la página de GitHub y cambiar la visibilidad del repositorio a público.</li>
-<li class="has-line-data" data-line-start="5982" data-line-end="5984">Ingresar al cPanel:
+<li class="has-line-data" data-line-start="6190" data-line-end="6191">Ingresar a la página de GitHub y cambiar la visibilidad del repositorio a público.</li>
+<li class="has-line-data" data-line-start="6191" data-line-end="6193">Ingresar al cPanel:
 <ul>
-<li class="has-line-data" data-line-start="5983" data-line-end="5984"><a href="https://ndembae.com/cpanel">https://ndembae.com/cpanel</a></li>
+<li class="has-line-data" data-line-start="6192" data-line-end="6193"><a href="https://ndembae.com/cpanel">https://ndembae.com/cpanel</a></li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5984" data-line-end="5985">Ir a sección <strong>Archivos/Git™ Version Control</strong> del cPanel.</li>
-<li class="has-line-data" data-line-start="5985" data-line-end="5989">Crear repositorio ingresando los siguientes parámetros:
+<li class="has-line-data" data-line-start="6193" data-line-end="6194">Ir a sección <strong>Archivos/Git™ Version Control</strong> del cPanel.</li>
+<li class="has-line-data" data-line-start="6194" data-line-end="6198">Crear repositorio ingresando los siguientes parámetros:
 <ul>
-<li class="has-line-data" data-line-start="5986" data-line-end="5987">Clone URL: <a href="https://github.com/petrix12/AppArbolGen.git">https://github.com/petrix12/AppArbolGen.git</a></li>
-<li class="has-line-data" data-line-start="5987" data-line-end="5988">Repository Path: public_html/apparbolgen.com</li>
-<li class="has-line-data" data-line-start="5988" data-line-end="5989">Repository Name: AppArbolGen</li>
+<li class="has-line-data" data-line-start="6195" data-line-end="6196">Clone URL: <a href="https://github.com/petrix12/AppArbolGen.git">https://github.com/petrix12/AppArbolGen.git</a></li>
+<li class="has-line-data" data-line-start="6196" data-line-end="6197">Repository Path: public_html/apparbolgen.com</li>
+<li class="has-line-data" data-line-start="6197" data-line-end="6198">Repository Name: AppArbolGen</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5989" data-line-end="5992">Copiar del proyecto local a la carpeta del hosting <strong>public_html/apparbolgen.com</strong> los siguientes directorios:
+<li class="has-line-data" data-line-start="6198" data-line-end="6201">Copiar del proyecto local a la carpeta del hosting <strong>public_html/apparbolgen.com</strong> los siguientes directorios:
 <ul>
-<li class="has-line-data" data-line-start="5990" data-line-end="5991">node_modules</li>
-<li class="has-line-data" data-line-start="5991" data-line-end="5992">vendor</li>
+<li class="has-line-data" data-line-start="6199" data-line-end="6200">node_modules</li>
+<li class="has-line-data" data-line-start="6200" data-line-end="6201">vendor</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="5992" data-line-end="5993">Copiar y pegar el archivo <strong>.env</strong> del local al hosting.</li>
-<li class="has-line-data" data-line-start="5993" data-line-end="5997">Cambiar las siguientes variables de entorno al archivo <strong>.env</strong><pre><code class="has-line-data" data-line-start="5995" data-line-end="5997">***
+<li class="has-line-data" data-line-start="6201" data-line-end="6202">Copiar y pegar el archivo <strong>.env</strong> del local al hosting.</li>
+<li class="has-line-data" data-line-start="6202" data-line-end="6206">Cambiar las siguientes variables de entorno al archivo <strong>.env</strong><pre><code class="has-line-data" data-line-start="6204" data-line-end="6206">***
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="5997" data-line-end="5998">Ir a sección <strong>Dominios/Dominios</strong> del cPanel.</li>
-<li class="has-line-data" data-line-start="5998" data-line-end="6000">En el dominio <strong><a href="http://ndembae.com">http://ndembae.com</a></strong> cambiar el directorio raíz a:
+<li class="has-line-data" data-line-start="6206" data-line-end="6207">Ir a sección <strong>Dominios/Dominios</strong> del cPanel.</li>
+<li class="has-line-data" data-line-start="6207" data-line-end="6209">En el dominio <strong><a href="http://ndembae.com">http://ndembae.com</a></strong> cambiar el directorio raíz a:
 <ul>
-<li class="has-line-data" data-line-start="5999" data-line-end="6000">public_html/apparbolgen.com/public</li>
+<li class="has-line-data" data-line-start="6208" data-line-end="6209">public_html/apparbolgen.com/public</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6000" data-line-end="6002">Ir a sección <strong>Software/Seleccionar Versión PHP</strong> y seleccionar una versión igual o superior a 7.4.</li>
+<li class="has-line-data" data-line-start="6209" data-line-end="6211">Ir a sección <strong>Software/Seleccionar Versión PHP</strong> y seleccionar una versión igual o superior a 7.4.</li>
 </ol>
-<h2 class="code-line" data-line-start=6002 data-line-end=6003><a id="Instrucciones_bsicas_de_Laravelpermission_6002"></a>Instrucciones básicas de Laravel-permission</h2>
+<h2 class="code-line" data-line-start=6211 data-line-end=6212><a id="Instrucciones_bsicas_de_Laravelpermission_6211"></a>Instrucciones básicas de Laravel-permission</h2>
 <ul>
-<li class="has-line-data" data-line-start="6003" data-line-end="6004">Documentación: <a href="https://spatie.be/docs/laravel-permission/v4/introduction">https://spatie.be/docs/laravel-permission/v4/introduction</a></li>
+<li class="has-line-data" data-line-start="6212" data-line-end="6213">Documentación: <a href="https://spatie.be/docs/laravel-permission/v4/introduction">https://spatie.be/docs/laravel-permission/v4/introduction</a></li>
 </ul>
 <ol>
-<li class="has-line-data" data-line-start="6004" data-line-end="6010">Implementación:
+<li class="has-line-data" data-line-start="6213" data-line-end="6219">Implementación:
 <ul>
-<li class="has-line-data" data-line-start="6005" data-line-end="6006">$ composer require spatie/laravel-permission</li>
-<li class="has-line-data" data-line-start="6006" data-line-end="6007">$ php artisan vendor:publish --provider=“Spatie\Permission\PermissionServiceProvider”</li>
-<li class="has-line-data" data-line-start="6007" data-line-end="6008">$ php artisan migrate</li>
-<li class="has-line-data" data-line-start="6008" data-line-end="6009">Añadir a la cabecera del modelo <strong>User</strong>: <strong>use Spatie\Permission\Traits\HasRoles;</strong></li>
-<li class="has-line-data" data-line-start="6009" data-line-end="6010">Añadir dentro de la clase del modelo <strong>User</strong>: <strong>use HasRoles;</strong></li>
+<li class="has-line-data" data-line-start="6214" data-line-end="6215">$ composer require spatie/laravel-permission</li>
+<li class="has-line-data" data-line-start="6215" data-line-end="6216">$ php artisan vendor:publish --provider=“Spatie\Permission\PermissionServiceProvider”</li>
+<li class="has-line-data" data-line-start="6216" data-line-end="6217">$ php artisan migrate</li>
+<li class="has-line-data" data-line-start="6217" data-line-end="6218">Añadir a la cabecera del modelo <strong>User</strong>: <strong>use Spatie\Permission\Traits\HasRoles;</strong></li>
+<li class="has-line-data" data-line-start="6218" data-line-end="6219">Añadir dentro de la clase del modelo <strong>User</strong>: <strong>use HasRoles;</strong></li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6010" data-line-end="6037">Instrucciones básicas:
+<li class="has-line-data" data-line-start="6219" data-line-end="6246">Instrucciones básicas:
 <ul>
-<li class="has-line-data" data-line-start="6011" data-line-end="6013">Crear un rol:
+<li class="has-line-data" data-line-start="6220" data-line-end="6222">Crear un rol:
 <ul>
-<li class="has-line-data" data-line-start="6012" data-line-end="6013">Role::create([‘name’ =&gt; ‘admin’]);</li>
+<li class="has-line-data" data-line-start="6221" data-line-end="6222">Role::create([‘name’ =&gt; ‘admin’]);</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6013" data-line-end="6016">Asignar un rol a un usuario:
+<li class="has-line-data" data-line-start="6222" data-line-end="6225">Asignar un rol a un usuario:
 <ul>
-<li class="has-line-data" data-line-start="6014" data-line-end="6015">$user = User::find(1);</li>
-<li class="has-line-data" data-line-start="6015" data-line-end="6016">$user-&gt;assignRole(‘admin’);</li>
+<li class="has-line-data" data-line-start="6223" data-line-end="6224">$user = User::find(1);</li>
+<li class="has-line-data" data-line-start="6224" data-line-end="6225">$user-&gt;assignRole(‘admin’);</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6016" data-line-end="6018">Crear un permiso:
+<li class="has-line-data" data-line-start="6225" data-line-end="6227">Crear un permiso:
 <ul>
-<li class="has-line-data" data-line-start="6017" data-line-end="6018">Permission::create([‘name’ =&gt; ‘universal’]);</li>
+<li class="has-line-data" data-line-start="6226" data-line-end="6227">Permission::create([‘name’ =&gt; ‘universal’]);</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6018" data-line-end="6021">Asignar un permiso a un rol:
+<li class="has-line-data" data-line-start="6227" data-line-end="6230">Asignar un permiso a un rol:
 <ul>
-<li class="has-line-data" data-line-start="6019" data-line-end="6020">$role = Role::find(1);</li>
-<li class="has-line-data" data-line-start="6020" data-line-end="6021">$role-&gt;givePermissionTo(‘universal’);</li>
+<li class="has-line-data" data-line-start="6228" data-line-end="6229">$role = Role::find(1);</li>
+<li class="has-line-data" data-line-start="6229" data-line-end="6230">$role-&gt;givePermissionTo(‘universal’);</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6021" data-line-end="6024">Asignar un permiso a un usuario:
+<li class="has-line-data" data-line-start="6230" data-line-end="6233">Asignar un permiso a un usuario:
 <ul>
-<li class="has-line-data" data-line-start="6022" data-line-end="6023">$user = User::find(2);</li>
-<li class="has-line-data" data-line-start="6023" data-line-end="6024">$user-&gt;givePermissionTo(‘universal’);</li>
+<li class="has-line-data" data-line-start="6231" data-line-end="6232">$user = User::find(2);</li>
+<li class="has-line-data" data-line-start="6232" data-line-end="6233">$user-&gt;givePermissionTo(‘universal’);</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6024" data-line-end="6026">Revocar permiso a un usuario:
+<li class="has-line-data" data-line-start="6233" data-line-end="6235">Revocar permiso a un usuario:
 <ul>
-<li class="has-line-data" data-line-start="6025" data-line-end="6026">$user-&gt;revokePermissionTo(‘universal’);</li>
+<li class="has-line-data" data-line-start="6234" data-line-end="6235">$user-&gt;revokePermissionTo(‘universal’);</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6026" data-line-end="6028">Revocar rol a un usuario:
+<li class="has-line-data" data-line-start="6235" data-line-end="6237">Revocar rol a un usuario:
 <ul>
-<li class="has-line-data" data-line-start="6027" data-line-end="6028">$user-&gt;removeRole(‘writer’);</li>
+<li class="has-line-data" data-line-start="6236" data-line-end="6237">$user-&gt;removeRole(‘writer’);</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6028" data-line-end="6030">Conocer si el usuario X tiene el rol “admin”:
+<li class="has-line-data" data-line-start="6237" data-line-end="6239">Conocer si el usuario X tiene el rol “admin”:
 <ul>
-<li class="has-line-data" data-line-start="6029" data-line-end="6030">$user-&gt;hasRole(‘admin’);</li>
+<li class="has-line-data" data-line-start="6238" data-line-end="6239">$user-&gt;hasRole(‘admin’);</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6030" data-line-end="6032">Conocer si el usuario X tiene el permiso “universal”:
+<li class="has-line-data" data-line-start="6239" data-line-end="6241">Conocer si el usuario X tiene el permiso “universal”:
 <ul>
-<li class="has-line-data" data-line-start="6031" data-line-end="6032">$user-&gt;hasPermissionTo(“universal”);</li>
+<li class="has-line-data" data-line-start="6240" data-line-end="6241">$user-&gt;hasPermissionTo(“universal”);</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6032" data-line-end="6034">Lista de roles que posee el usuario X:
+<li class="has-line-data" data-line-start="6241" data-line-end="6243">Lista de roles que posee el usuario X:
 <ul>
-<li class="has-line-data" data-line-start="6033" data-line-end="6034">$user-&gt;getRoleNames();</li>
+<li class="has-line-data" data-line-start="6242" data-line-end="6243">$user-&gt;getRoleNames();</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6034" data-line-end="6037">Lista de permisos que posee el usuario X:
+<li class="has-line-data" data-line-start="6243" data-line-end="6246">Lista de permisos que posee el usuario X:
 <ul>
-<li class="has-line-data" data-line-start="6035" data-line-end="6037">$user-&gt;getAllPermissions();</li>
+<li class="has-line-data" data-line-start="6244" data-line-end="6246">$user-&gt;getAllPermissions();</li>
 </ul>
 </li>
 </ul>
 </li>
 </ol>
-<h2 class="code-line" data-line-start=6037 data-line-end=6038><a id="Crear_rutas_de_mantenimiento_de_la_aplicacin_6037"></a>Crear rutas de mantenimiento de la aplicación</h2>
+<h2 class="code-line" data-line-start=6246 data-line-end=6247><a id="Crear_rutas_de_mantenimiento_de_la_aplicacin_6246"></a>Crear rutas de mantenimiento de la aplicación</h2>
 <ol>
-<li class="has-line-data" data-line-start="6038" data-line-end="6077">Agregar las siguientes rutas en <strong>routes\web.php</strong> para poder realizarle mantenimiento a la aplicación cuando se encuentre en producción:<pre><code class="has-line-data" data-line-start="6040" data-line-end="6076" class="language-php"><span class="hljs-comment">// RUTAS PARA EL MANTENIMIENTO DE LA APLICACIÓN EN PRODUCCIÓN</span>
+<li class="has-line-data" data-line-start="6247" data-line-end="6286">Agregar las siguientes rutas en <strong>routes\web.php</strong> para poder realizarle mantenimiento a la aplicación cuando se encuentre en producción:<pre><code class="has-line-data" data-line-start="6249" data-line-end="6285" class="language-php"><span class="hljs-comment">// RUTAS PARA EL MANTENIMIENTO DE LA APLICACIÓN EN PRODUCCIÓN</span>
 <span class="hljs-comment">// Ruta para ejecutar en producción: $ php artisan key:generate</span>
 Route::get(<span class="hljs-string">'key-generate'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
     Artisan::call(<span class="hljs-string">'key:generate'</span>);
@@ -6336,111 +6544,122 @@ Route::get(<span class="hljs-string">'view-clear'</span>, <span class="hljs-func
 </code></pre>
 </li>
 </ol>
-<h2 class="code-line" data-line-start=6077 data-line-end=6078><a id="Preparando_proyecto_para_produccin_6077"></a>Preparando proyecto para producción</h2>
+<h2 class="code-line" data-line-start=6286 data-line-end=6287><a id="Preparando_proyecto_para_produccin_6286"></a>Preparando proyecto para producción</h2>
 <ol>
-<li class="has-line-data" data-line-start="6078" data-line-end="6080">Limpiar el caché de la Aplicación:
+<li class="has-line-data" data-line-start="6287" data-line-end="6289">Limpiar el caché de la Aplicación:
 <ul>
-<li class="has-line-data" data-line-start="6079" data-line-end="6080">$ php artisan cache:clear</li>
+<li class="has-line-data" data-line-start="6288" data-line-end="6289">$ php artisan cache:clear</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6080" data-line-end="6082">Limpiar las rutas de la Aplicación:
+<li class="has-line-data" data-line-start="6289" data-line-end="6291">Limpiar las rutas de la Aplicación:
 <ul>
-<li class="has-line-data" data-line-start="6081" data-line-end="6082">$ php artisan route:clear</li>
+<li class="has-line-data" data-line-start="6290" data-line-end="6291">$ php artisan route:clear</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6082" data-line-end="6084">Limpiar las configuraciones de la Aplicación:
+<li class="has-line-data" data-line-start="6291" data-line-end="6293">Limpiar las configuraciones de la Aplicación:
 <ul>
-<li class="has-line-data" data-line-start="6083" data-line-end="6084">$ php artisan config:clear</li>
+<li class="has-line-data" data-line-start="6292" data-line-end="6293">$ php artisan config:clear</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6084" data-line-end="6087">Limpiar las vistas de la Aplicación:
+<li class="has-line-data" data-line-start="6293" data-line-end="6296">Limpiar las vistas de la Aplicación:
 <ul>
-<li class="has-line-data" data-line-start="6085" data-line-end="6087">$ php artisan view:clear</li>
+<li class="has-line-data" data-line-start="6294" data-line-end="6296">$ php artisan view:clear</li>
 </ul>
 </li>
 </ol>
-<h2 class="code-line" data-line-start=6087 data-line-end=6088><a id="IP_pblica_6087"></a>IP pública:</h2>
+<h2 class="code-line" data-line-start=6296 data-line-end=6297><a id="IP_pblica_6296"></a>IP pública:</h2>
 <pre><code>+ https://www.cual-es-mi-ip.net
 </code></pre>
-<h2 class="code-line" data-line-start=6090 data-line-end=6091><a id="Crear_modelo_6090"></a>Crear modelo:</h2>
+<h2 class="code-line" data-line-start=6299 data-line-end=6300><a id="Crear_modelo_6299"></a>Crear modelo:</h2>
 <ol>
-<li class="has-line-data" data-line-start="6091" data-line-end="6107">Diferentes formas para crear modelos:
+<li class="has-line-data" data-line-start="6300" data-line-end="6316">Diferentes formas para crear modelos:
 <ul>
-<li class="has-line-data" data-line-start="6092" data-line-end="6094">Crear solo el modelo
+<li class="has-line-data" data-line-start="6301" data-line-end="6303">Crear solo el modelo
 <ul>
-<li class="has-line-data" data-line-start="6093" data-line-end="6094">$ php artisan make:model Model</li>
+<li class="has-line-data" data-line-start="6302" data-line-end="6303">$ php artisan make:model Model</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6094" data-line-end="6096">Crear el modelo con migración:
+<li class="has-line-data" data-line-start="6303" data-line-end="6305">Crear el modelo con migración:
 <ul>
-<li class="has-line-data" data-line-start="6095" data-line-end="6096">$ php artisan make:model Model -m</li>
+<li class="has-line-data" data-line-start="6304" data-line-end="6305">$ php artisan make:model Model -m</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6096" data-line-end="6098">Crear el modelo con migración y controlador:
+<li class="has-line-data" data-line-start="6305" data-line-end="6307">Crear el modelo con migración y controlador:
 <ul>
-<li class="has-line-data" data-line-start="6097" data-line-end="6098">$ php artisan make:model Model -mc</li>
+<li class="has-line-data" data-line-start="6306" data-line-end="6307">$ php artisan make:model Model -mc</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6098" data-line-end="6100">Crear el modelo con migración, controlador y seeder:
+<li class="has-line-data" data-line-start="6307" data-line-end="6309">Crear el modelo con migración, controlador y seeder:
 <ul>
-<li class="has-line-data" data-line-start="6099" data-line-end="6100">$ php artisan make:model Model -mcs</li>
+<li class="has-line-data" data-line-start="6308" data-line-end="6309">$ php artisan make:model Model -mcs</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6100" data-line-end="6102">Crear el modelo con migración, controlador, seeder y factory:
+<li class="has-line-data" data-line-start="6309" data-line-end="6311">Crear el modelo con migración, controlador, seeder y factory:
 <ul>
-<li class="has-line-data" data-line-start="6101" data-line-end="6102">$ php artisan make:model Model -mcsf</li>
+<li class="has-line-data" data-line-start="6310" data-line-end="6311">$ php artisan make:model Model -mcsf</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6102" data-line-end="6104">Crear el modelo con migración, controlador (con recursos), seeder y factory:
+<li class="has-line-data" data-line-start="6311" data-line-end="6313">Crear el modelo con migración, controlador (con recursos), seeder y factory:
 <ul>
-<li class="has-line-data" data-line-start="6103" data-line-end="6104">$ php artisan make:model Model -mcrsf</li>
+<li class="has-line-data" data-line-start="6312" data-line-end="6313">$ php artisan make:model Model -mcrsf</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6104" data-line-end="6107">Crear el modelo con migración con todo:
+<li class="has-line-data" data-line-start="6313" data-line-end="6316">Crear el modelo con migración con todo:
 <ul>
-<li class="has-line-data" data-line-start="6105" data-line-end="6107">$ php artisan make:model Model -a</li>
+<li class="has-line-data" data-line-start="6314" data-line-end="6316">$ php artisan make:model Model -a</li>
 </ul>
 </li>
 </ul>
 </li>
 </ol>
-<h2 class="code-line" data-line-start=6107 data-line-end=6108><a id="Creacin_de_enlaces_simblicos_symbolic_link_6107"></a>Creación de enlaces simbólicos (symbolic link)</h2>
+<h2 class="code-line" data-line-start=6316 data-line-end=6317><a id="Creacin_de_enlaces_simblicos_symbolic_link_6316"></a>Creación de enlaces simbólicos (symbolic link)</h2>
 <ol>
-<li class="has-line-data" data-line-start="6108" data-line-end="6113">Crear enlace simbólico en Windows 10
+<li class="has-line-data" data-line-start="6317" data-line-end="6322">Crear enlace simbólico en Windows 10
 <ul>
-<li class="has-line-data" data-line-start="6109" data-line-end="6110">Ejecutar <strong>C:\Windows\System32\cmd.exe como administrador</strong></li>
-<li class="has-line-data" data-line-start="6110" data-line-end="6111">$ Mklink/D C:\xampp\htdocs\sefar\public\doc C:\xampp\htdocs\<a href="http://universalsefar.com">universalsefar.com</a>\documentos</li>
-<li class="has-line-data" data-line-start="6111" data-line-end="6113">$ Mklink/D C:\xampp\htdocs\sefar\storage\app\public\doc C:\xampp\htdocs\<a href="http://universalsefar.com">universalsefar.com</a>\documentos
+<li class="has-line-data" data-line-start="6318" data-line-end="6319">Ejecutar <strong>C:\Windows\System32\cmd.exe como administrador</strong></li>
+<li class="has-line-data" data-line-start="6319" data-line-end="6320">$ Mklink/D C:\xampp\htdocs\sefar\public\doc C:\xampp\htdocs\<a href="http://universalsefar.com">universalsefar.com</a>\documentos</li>
+<li class="has-line-data" data-line-start="6320" data-line-end="6322">$ Mklink/D C:\xampp\htdocs\sefar\storage\app\public\doc C:\xampp\htdocs\<a href="http://universalsefar.com">universalsefar.com</a>\documentos
 <ul>
-<li class="has-line-data" data-line-start="6112" data-line-end="6113">Mklink /D “ruta donde queremos crear el enlace” “ruta de origen de archivos”</li>
+<li class="has-line-data" data-line-start="6321" data-line-end="6322">Mklink /D “ruta donde queremos crear el enlace” “ruta de origen de archivos”</li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6113" data-line-end="6124">Crear enlace simbólico en el hosting
+<li class="has-line-data" data-line-start="6322" data-line-end="6331">Crear enlace simbólico en el hosting
 <ul>
-<li class="has-line-data" data-line-start="6114" data-line-end="6115">En el cPanel ir a <strong>Trabajos de cron</strong>.</li>
-<li class="has-line-data" data-line-start="6115" data-line-end="6116">Ubicarse en <strong>Añadir nuevo trabajo de cron</strong> y luego <strong>Configuración común</strong>, y seleccionar <em><em>Una vez por mínuto(</em> * * * <em>)</em></em>.</li>
-<li class="has-line-data" data-line-start="6116" data-line-end="6119">En <strong>Comando:</strong> escribir:
+<li class="has-line-data" data-line-start="6323" data-line-end="6324">En el cPanel ir a <strong>Trabajos de cron</strong>.</li>
+<li class="has-line-data" data-line-start="6324" data-line-end="6325">Ubicarse en <strong>Añadir nuevo trabajo de cron</strong> y luego <strong>Configuración común</strong>, y seleccionar <em><em>Una vez por mínuto(</em> * * * <em>)</em></em>.</li>
+<li class="has-line-data" data-line-start="6325" data-line-end="6328">En <strong>Comando:</strong> escribir:
 <ul>
-<li class="has-line-data" data-line-start="6117" data-line-end="6118">ln -s /home/ndembae/public_html/tree/storage/app/public /home/ndembae/public_html/tree/public/storage</li>
-<li class="has-line-data" data-line-start="6118" data-line-end="6119">(Destino - Origen)</li>
+<li class="has-line-data" data-line-start="6326" data-line-end="6327">ln -s /home/solpp/public_html/tree/storage/app/public /home/solpp/public_html/tree/public/storage</li>
+<li class="has-line-data" data-line-start="6327" data-line-end="6328">(Destino - Origen)</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="6119" data-line-end="6120">Presionar <strong>Añadir nuevo trabajo de cron</strong> y esperar a que se ejecute la tarea.</li>
-<li class="has-line-data" data-line-start="6120" data-line-end="6121">Borrar tarea una vez creado el enlace en <strong>Trabajos de cron actuales</strong>.</li>
-<li class="has-line-data" data-line-start="6121" data-line-end="6124">Repetir el procedimiento pero ahora para:
-<ul>
-<li class="has-line-data" data-line-start="6122" data-line-end="6124">ln -s /home/ndembae/public_html/documentos /home/ndembae/public_html/app.universalsefar.com/storage/app/public/doc</li>
-</ul>
-</li>
+<li class="has-line-data" data-line-start="6328" data-line-end="6329">Presionar <strong>Añadir nuevo trabajo de cron</strong> y esperar a que se ejecute la tarea.</li>
+<li class="has-line-data" data-line-start="6329" data-line-end="6331">Borrar tarea una vez creado el enlace en <strong>Trabajos de cron actuales</strong>.</li>
 </ul>
 </li>
 </ol>
-<h2 class="code-line" data-line-start=6124 data-line-end=6125><a id="Detalles_finales_finales_6124"></a>Detalles finales finales</h2>
+<h2 class="code-line" data-line-start=6331 data-line-end=6332><a id="Detalles_finales_finales_6331"></a>Detalles finales finales</h2>
 <ol>
-<li class="has-line-data" data-line-start="6125" data-line-end="6126">En un navegador ir a: <a href="https://app-arbol-2021.herokuapp.com/storage-link">http://app-arbol-2021.herokuapp.com/storage-link</a></li>
-<li class="has-line-data" data-line-start="6126" data-line-end="6127">Eliminar todos loa archvos <strong>.gitignore</strong> presente en las carpetas y subcarpetas de <strong>storage</strong>.</li>
-<li class="has-line-data" data-line-start="6127" data-line-end="6128">Crear un nuevo repositorio en <strong>GitHub</strong>.</li>
+<li class="has-line-data" data-line-start="6332" data-line-end="6333">En un navegador ir a: <a href="https://app-arbol-2021.herokuapp.com/storage-link">http://app-arbol-2021.herokuapp.com/storage-link</a></li>
+<li class="has-line-data" data-line-start="6333" data-line-end="6334">Eliminar todos loa archvos <strong>.gitignore</strong> presente en las carpetas y subcarpetas de <strong>storage</strong>.</li>
+<li class="has-line-data" data-line-start="6334" data-line-end="6335">Crear un nuevo repositorio en <strong>GitHub</strong>.</li>
 </ol>
+<p class="has-line-data" data-line-start="6339" data-line-end="6340"><a href="/cdn-cgi/l/email-protection#177d787976637f767957637f7e797c64707b76646471627b7b3974787a"><span class="__cf_email__" data-cfemail="8ee4e1e0effae6efe0cefae6e7e0e5fde9e2effdfde8fbe2e2a0ede1e3">[email&#160;protected]</span></a></p>
+<p class="has-line-data" data-line-start="6341" data-line-end="6351">Jonathan Fetter10:44<br>
+<a href="http://3.133.206.22/admin/">http://3.133.206.22/admin/</a><br>
+<a href="/cdn-cgi/l/email-protection#dfb5b0b1beabb7beb19fabb7b6b1b4acb8b3beacacb9aab3b3f1bcb0b2"><span class="__cf_email__" data-cfemail="9af0f5f4fbeef2fbf4daeef2f3f4f1e9fdf6fbe9e9fceff6f6b4f9f5f7">[email&#160;protected]</span></a><br>
+Jonathan Fetter10:47<br>
+MERN stack<br>
+MongoDB, Express, React, Node JS<br>
+AWS<br>
+Jonathan Fetter10:48<br>
+Node<br>
+<a href="https://zapier.com/">https://zapier.com/</a></p>
+<p class="has-line-data" data-line-start="6352" data-line-end="6355">Jonathan Fetter10:51<br>
+<a href="https://webflow.com/">https://webflow.com/</a><br>
+GatsbyJS</p>
+<p class="has-line-data" data-line-start="6356" data-line-end="6358">Jonathan Fetter10:54<br>
+<a href="https://www.bugherd.com/invitation/po3z8foepfwgizqzpplzyg">https://www.bugherd.com/invitation/po3z8foepfwgizqzpplzyg</a></p>
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body></html>

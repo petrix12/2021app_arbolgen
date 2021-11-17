@@ -2,7 +2,7 @@
     <section class="bg-cover" style="background-image: url({{ asset('assets/images/home/img_portada.jpg') }})">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-36">
             <div class="w-full md:w-3/4 lg:w-1/2">
-                <h1 class="text-white font-bold text-4xl">Árbol genealógico familiar</h1>
+                <h1 class="text-white font-bold text-4xl">{{ GetApellidoPrincipal() }}</h1>
                 <p class="text-gray-300 mt-4"><strong>Desarrollado por Soluciones++</strong></p>
                 <p class="text-gray-300" >en donde un clic menos (-) importa!!!</p>
             </div>
