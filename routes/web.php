@@ -20,7 +20,8 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('dashboard/{id?}', function ($id=1) {
+Route::middleware(['auth:sanctum', 'verified'])->get('dashboard/{id?}', function ($id=0) {
+    $id == 0 ? $id = GetDefaultPerson() : 1;
     return view('dashboard', compact('id'));
 })->name('dashboard');
 
